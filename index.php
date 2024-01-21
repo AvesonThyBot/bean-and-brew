@@ -6,8 +6,10 @@ include_once("classes/webpage.class.php");
 $webpage = new Webpage("Home - Bean and Brew", "home");
 
 // Include Header
-include_once("./includes/header.inc.php")
+include_once("./includes/header.inc.php");
+include_once("./classes/product.class.php");
 ?>
+
 
 <!-- Off Canvas -->
 <div class="offcanvas offcanvas-start show" tabindex="-1" id="timetable" data-bs-theme="dark">
@@ -48,7 +50,19 @@ include_once("./includes/header.inc.php")
 </div>
 
 <!-- Main Body -->
-<div class="text-white p-2">a</div>
+<div class="col-10 m-auto p-2 border rounded text-white">
+    <!-- Top Coffee -->
+    <?php
+    // coffe ids = 3,6,8
+    $coffee = new Product();
+    $coffee->getProduct(3); ?>
+    <!-- Top Baked Goods -->
+    <?php
+    // food ids = 22,23,31
+    $bakedGoods = new Product();
+    $bakedGoods->getProduct(22); ?>
+
+</div>
 
 <?php
 // Footer 

@@ -26,4 +26,9 @@ class Webpage {
     public function getTitle() {
         echo $this->title;
     }
+
+    // Method to display timetable button
+    public function showButton() {
+        echo strpos($_SERVER['PHP_SELF'], 'index.php') ? '' : 'd-none';
+    }
 }
