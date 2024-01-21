@@ -1,3 +1,9 @@
+<?php // Checks if the URL contains "classes/" or "includes/"
+if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_SELF'], 'includes/') !== false) {
+    header('Location: ../index.php');
+    exit();
+} ?>
+
 <div class="container text-white position-absolute bottom-0 start-50 translate-middle-x">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top" data-bs-theme="dark">
         <p class="col-md-4 mb-0 text-white">&copy; 2024 Bean and Brew</p>

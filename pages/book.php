@@ -1,6 +1,12 @@
-<?php // Navbar/ Header
-$title = "Book A Space - Bean and Brew";
-$currentActive = "book";
+<?php
+
+// Include the webpage class
+include_once("../classes/webpage.class.php");
+
+// Create Object
+$webpage = new Webpage("Book A Space - Bean and Brew", "book");
+
+// Include Header
 include_once("../includes/header.inc.php")
 ?>
 

@@ -1,6 +1,11 @@
-<?php // Navbar/ Header
-$title = "Coffee - Bean and Brew";
-$currentActive = "coffee";
+<?php
+// Include the webpage class
+include_once("../classes/webpage.class.php");
+
+// Create Object
+$webpage = new Webpage("Coffee - Bean and Brew", "coffee");
+
+// Include Header
 include_once("../includes/header.inc.php")
 ?>
 
