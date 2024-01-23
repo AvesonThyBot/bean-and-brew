@@ -9,8 +9,7 @@ $webpage = new Webpage("Home - Bean and Brew", "home");
 include_once("./includes/header.inc.php");
 include_once("./classes/product.class.php");
 ?>
-
-
+<link rel="stylesheet" href="style.css">
 <!-- Off Canvas -->
 <div class="offcanvas offcanvas-start show" tabindex="-1" id="timetable" data-bs-theme="dark">
     <!-- Off Canvas Header -->
@@ -51,17 +50,16 @@ include_once("./classes/product.class.php");
 
 <!-- Main Body -->
 <div class="col-10 m-auto p-2 border rounded text-white">
-    <!-- Top Coffee -->
-    <?php
-    // coffe ids = 3,6,8
-    $coffee = new Product();
-    $coffee->getProduct(3); ?>
-    <!-- Top Baked Goods -->
-    <?php
-    // food ids = 22,23,31
-    $bakedGoods = new Product();
-    $bakedGoods->getProduct(22); ?>
-
+    <!-- Top Products -->
+    <div class="col-12">
+    <?php $coffee = new Index(); ?>
+        <div class="row d-flex justify-content-evenly gap-2 my-2">
+            <?php $coffee->getTopProducts("coffee");?>
+        </div>
+        <div class="row d-flex justify-content-evenly gap-2 my-2">
+            <?php $coffee->getTopProducts("baked");?>
+        </div>
+    </div>
 </div>
 
 <?php

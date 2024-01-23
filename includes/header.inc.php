@@ -25,6 +25,8 @@ if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_S
             <a class="navbar-brand" href="#">
                 <img src="/images/logo.png" class="img-fluid user-select-none" alt="Bean and Brew" width="50" draggable="false" />
             </a>
+
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
