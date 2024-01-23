@@ -31,45 +31,46 @@ class Product extends Dbh {
 }
 
 // Index Class
-class Index extends Product{
+class Index extends Product {
     // Properties
-    private $productList = [3,6,8,22,23,31];
+    private $productList = [3, 6, 8, 22, 23, 31];
     private $currentProduct;
 
     // Method to return the html code for products
-    private function getHTML($type){
+    private function getHTML($type) {
         echo '
         <div class="card" style="width: 18rem;">
-            <img src="'. $this->currentProduct["product_image"].'" class="card-img-top" alt="'. $this->currentProduct["product_name"].'" width="100px" height="30px">
+            <img src="' . $this->currentProduct["product_image"] . '" class="card-img-top overflow-hidden" alt="' . $this->currentProduct["product_name"] . '" width="300px" height="169px">
             <div class="card-body text-center">
-                <h5 class="card-title">'. $this->currentProduct["product_name"].'</h5>
-                <p class="card-text">'. $this->currentProduct["product_description"].'</p>
-                <p class="card-text">£'. $this->currentProduct["product_price"].'</p>
-                <a href="../pages/'.  $type . '?type='. strtolower($this->currentProduct['product_name']) . '" class="btn btn-outline-dark">Add</a>
+                <h5 class="card-title">' . $this->currentProduct["product_name"] . '</h5>
+                <p class="card-text">' . $this->currentProduct["product_description"] . '</p>
+                <p class="card-text">£' . $this->currentProduct["product_price"] . '</p>
+                <div class="card-footer">
+                <a href="../pages/' .  $type . '?type=' . strtolower($this->currentProduct['product_name']) . '" class="btn btn-outline-dark">Add</a>
+                </div>
             </div>
         </div>';
     }
 
     // Method to display top 3 coffee and baked goods in index.php
-    public function getTopProducts($type){
+    public function getTopProducts($type) {
         if ($type == "coffee") {
-            for ($i=0; $i < 3; $i++) { 
+            for ($i = 0; $i < 3; $i++) {
                 $this->currentProduct  = $this->getProduct($this->productList[$i]);
                 $this->getHTML("coffee.php");
             }
-        }elseif ($type == "baked"){
-            for ($i=3; $i < count($this->productList); $i++) { 
+        } elseif ($type == "baked") {
+            for ($i = 3; $i < count($this->productList); $i++) {
                 $this->currentProduct  = $this->getProduct($this->productList[$i]);
                 $this->getHTML("baked.php");
             }
-        }else{
+        } else {
             echo "There was an error!";
         }
 
-        
+
 
         // coffe ids = 3,6,8
         // food ids = 22,23,31
     }
-    
 }

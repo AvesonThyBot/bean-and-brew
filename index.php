@@ -49,15 +49,15 @@ include_once("./classes/product.class.php");
 </div>
 
 <!-- Main Body -->
-<div class="col-10 m-auto p-2 border rounded text-white">
+<div class="col-10 m-auto p-2 border rounded text-white my-2">
     <!-- Top Products -->
     <div class="col-12">
-    <?php $coffee = new Index(); ?>
+        <?php $coffee = new Index(); ?>
         <div class="row d-flex justify-content-evenly gap-2 my-2">
-            <?php $coffee->getTopProducts("coffee");?>
+            <?php $coffee->getTopProducts("coffee"); ?>
         </div>
         <div class="row d-flex justify-content-evenly gap-2 my-2">
-            <?php $coffee->getTopProducts("baked");?>
+            <?php $coffee->getTopProducts("baked"); ?>
         </div>
     </div>
 </div>
