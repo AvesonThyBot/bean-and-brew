@@ -13,8 +13,26 @@ if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_S
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php $webpage->getTitle() ?></title>
     <link rel="shortcut icon" href="/images/logo.png" type="image/x-icon" />
+    <?php $webpage->getStyleSheet() ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+    <!-- Scrollbar Css for all pages -->
+    <style>
+        body::-webkit-scrollbar {
+            width: .5em;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background-color: #fff;
+            border-radius: 50px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background-color: #212529;
+        }
+    </style>
+
 </head>
 
 <body class="bg-dark">
@@ -26,7 +44,7 @@ if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_S
                 <img src="/images/logo.png" class="img-fluid user-select-none" alt="Bean and Brew" width="50" draggable="false" />
             </a>
 
-            
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

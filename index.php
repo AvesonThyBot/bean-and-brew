@@ -4,6 +4,7 @@ include_once("classes/webpage.class.php");
 
 // Create Object
 $webpage = new Webpage("Home - Bean and Brew", "home");
+$webpage->setStyleSheet("styles/index.css");
 
 // Include Header
 include_once("./includes/header.inc.php");

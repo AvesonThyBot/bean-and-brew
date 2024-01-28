@@ -4,8 +4,8 @@ if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_S
     exit();
 } ?>
 
-<footer class="navbar navbar-fixed-bottom d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top" data-bs-theme="dark">
-    <p class="col-md-4 mb-0 text-white">&copy; 2024 Bean and Brew</p>
+<footer class="footer-bottom d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top" data-bs-theme="dark">
+    <p class="col-md-4 mb-0 p-2 text-white">&copy; 2024 Bean and Brew</p>
 
     <div class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto text-decoration-none gap-3">
         <!-- Twitter -->
@@ -37,6 +37,7 @@ if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_S
 
 
 <!-- Script -->
+<?php $webpage->getScript() ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 
