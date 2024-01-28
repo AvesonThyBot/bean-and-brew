@@ -4,7 +4,7 @@ if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_S
     exit();
 } ?>
 
-<footer class="footer-bottom d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top" data-bs-theme="dark">
+<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top" data-bs-theme="dark">
     <p class="col-md-4 mb-0 p-2 text-white">&copy; 2024 Bean and Brew</p>
 
     <div class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto text-decoration-none gap-3">

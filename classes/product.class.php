@@ -39,14 +39,14 @@ class Index extends Product {
     // Method to return the html code for products
     private function getHTML($type) {
         echo '
-        <div class="card" style="width: 18rem; max-height: 540px; min-height:540px; ">
-            <img src="' . $this->currentProduct["product_image"] . '" class="card-img-top overflow-hidden" alt="' . $this->currentProduct["product_name"] . '" width="300px" height="169px">
+        <div class="card" style="width: 18rem;">
+            <img src="' . $this->currentProduct["product_image"] . '" class="card-img-top rounded" alt="' . $this->currentProduct["product_name"] . '" width="200px" height="300px">
             <div class="card-body text-center">
                 <h5 class="card-title">' . $this->currentProduct["product_name"] . '</h5>
                 <p class="card-text">' . $this->currentProduct["product_description"] . '</p>
-                <p class="card-text">£' . $this->currentProduct["product_price"] . '</p>
-                <div class="card-footer">
-                <a href="../pages/' .  $type . '?type=' . strtolower($this->currentProduct['product_name']) . '" class="btn btn-outline-dark">Add</a>
+                <div class="card-footer d-flex justify-content-evenly m-0 text-center">
+                    <p class="card-text">£' . $this->currentProduct["product_price"] . '</p>
+                    <a href="../pages/' .  $type . '?type=' . $this->currentProduct['product_id'] . '" class="btn btn-outline-dark">Add</a>
                 </div>
             </div>
         </div>';
@@ -67,6 +67,7 @@ class Index extends Product {
         } else {
             echo "There was an error!";
         }
+        $this->currentProduct = ''; //reset data to free memory
 
 
 

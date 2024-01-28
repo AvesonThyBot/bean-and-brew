@@ -1,0 +1,4 @@
+footer svg:hover {
+	fill: black;
+	transition: 0.1s ease-in;
+}

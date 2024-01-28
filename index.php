@@ -10,7 +10,6 @@ $webpage->setStyleSheet("styles/index.css");
 include_once("./includes/header.inc.php");
 include_once("./classes/product.class.php");
 ?>
-<link rel="stylesheet" href="style.css">
 <!-- Off Canvas -->
 <div class="offcanvas offcanvas-start show" tabindex="-1" id="timetable" data-bs-theme="dark">
     <!-- Off Canvas Header -->
@@ -50,14 +49,15 @@ include_once("./classes/product.class.php");
 </div>
 
 <!-- Main Body -->
-<div class="col-10 m-auto p-2 border rounded text-white my-2">
+<div class="col-10 m-auto p-2 text-white my-2">
     <!-- Top Products -->
     <div class="col-12">
         <?php $coffee = new Index(); ?>
-        <div class="row d-flex justify-content-evenly gap-2 my-2">
+        <div class="row d-flex justify-content-evenly gap-3 my-2">
             <?php $coffee->getTopProducts("coffee"); ?>
         </div>
-        <div class="row d-flex justify-content-evenly gap-2 my-2">
+        <br>
+        <div class="row d-flex justify-content-evenly gap-3 my-2">
             <?php $coffee->getTopProducts("baked"); ?>
         </div>
     </div>
