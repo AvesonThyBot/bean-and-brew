@@ -43,10 +43,10 @@ class Index extends Product {
             <img src="' . $this->currentProduct["product_image"] . '" class="card-img-top rounded" alt="' . $this->currentProduct["product_name"] . '" width="200px" height="300px">
             <div class="card-body text-center">
                 <h5 class="card-title">' . $this->currentProduct["product_name"] . '</h5>
-                <p class="card-text">' . $this->currentProduct["product_description"] . '</p>
+                <p class="card-text" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="' . $this->currentProduct["product_description"] . '">' . $this->currentProduct["product_description"] . '</p>
                 <div class="card-footer d-flex justify-content-evenly m-0 text-center">
                     <p class="card-text">£' . $this->currentProduct["product_price"] . '</p>
-                    <a href="../pages/' .  $type . '?type=' . $this->currentProduct['product_id'] . '" class="btn btn-outline-dark">Add</a>
+                    <a href="../pages/' .  $type . '?type=' . $this->currentProduct['product_id'] . '?quantity=1" class="btn btn-outline-dark">Add</a>
                 </div>
             </div>
         </div>';

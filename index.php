@@ -5,13 +5,14 @@ include_once("classes/webpage.class.php");
 // Create Object
 $webpage = new Webpage("Home - Bean and Brew", "home");
 $webpage->setStyleSheet("styles/index.css");
+$webpage->setScript("scripts/index.js");
 
 // Include Header
 include_once("./includes/header.inc.php");
 include_once("./classes/product.class.php");
 ?>
 <!-- Off Canvas -->
-<div class="offcanvas offcanvas-start show" tabindex="-1" id="timetable" data-bs-theme="dark">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="timetable" data-bs-theme="dark">
     <!-- Off Canvas Header -->
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Timetable</h5>
