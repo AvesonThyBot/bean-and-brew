@@ -21,7 +21,7 @@ class Webpage {
 
     // Method to assign active to appropriate tag
     public function setActive($element) {
-        echo $element == $this->currentActive ? 'active text-bg-light' :  '';
+        return $element == $this->currentActive ? 'active text-bg-light' :  '';
     }
 
     // Method to get title

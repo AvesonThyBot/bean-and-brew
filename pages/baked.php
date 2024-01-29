@@ -1,5 +1,5 @@
 <?php
-// Include the webpage class
+// Include the necessary class
 include_once("../classes/webpage.class.php");
 
 // Create Object
