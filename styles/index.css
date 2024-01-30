@@ -1,7 +1,14 @@
 /* Text Truncation */
 .card-text {
-	display: -webkit-box !important;
-	-webkit-line-clamp: 3 !important;
-	-webkit-box-orient: vertical !important;
-	overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.card-title {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
 }

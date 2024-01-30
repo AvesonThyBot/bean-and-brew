@@ -33,20 +33,22 @@ class Product extends Dbh {
 // Index Class
 class Index extends Product {
     // Properties
-    private $productList = [3, 6, 8, 22, 23, 31];
+    private $productList = [3, 6, 8, 12, 22, 23, 27, 31];
     private $currentProduct;
 
     // Method to return the html code for products
     private function getHTML($type) {
         echo '
-        <div class="card" style="width: 18rem;">
-            <img src="' . $this->currentProduct["product_image"] . '" class="card-img-top rounded" alt="' . $this->currentProduct["product_name"] . '" width="200px" height="300px">
-            <div class="card-body text-center">
-                <h5 class="card-title">' . $this->currentProduct["product_name"] . '</h5>
-                <p class="card-text" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="' . $this->currentProduct["product_description"] . '">' . $this->currentProduct["product_description"] . '</p>
-                <div class="card-footer d-flex justify-content-evenly m-0 text-center">
-                    <p class="card-text">£' . $this->currentProduct["product_price"] . '</p>
-                    <a href="../pages/' .  $type . '?type=' . $this->currentProduct['product_id'] . '?quantity=1" class="btn btn-outline-dark">Add</a>
+        <div class="col-md-3 col-lg-3 mb-4">
+            <div class="card h-100 text-bg-white" width="260px">
+                <img src="' . $this->currentProduct["product_image"] . '" class="card-img-top" alt="' . $this->currentProduct["product_name"] . ' width="260px" height="390px"">
+                <div class="card-body text-center">
+                    <h5 class="card-title"  data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="left" data-bs-content="' . $this->currentProduct["product_name"] . '">' . $this->currentProduct["product_name"] . '</h5>
+                    <p class="card-text" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="' . $this->currentProduct["product_description"] . '">' . $this->currentProduct["product_description"] . '</p>
+                    <div class="d-flex justify-content-between align-items-center mx-auto">
+                        <span class="text-black">£2.50</span>
+                        <a href="../pages/' .  $type . '?type=' . $this->currentProduct['product_id'] . '&quantity=1" class="btn btn-outline-dark">Order Coffee</a>
+                    </div>
                 </div>
             </div>
         </div>';
