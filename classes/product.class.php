@@ -70,8 +70,8 @@ class Index extends Product {
 
         // Return fake value and assign random percentage
         $this->discountPercentage =  '-' . $randomPercentage . '%';
-        $fakeValue = round($fakeValue / 0.25) * 0.25; //make the decimal be 00,25,50 or 75
-        return number_format($fakeValue, 2);
+        $fakeValue = round($fakeValue / 0.50) * 0.50; //make the decimal be 00,25,50 or 75
+        return number_format($fakeValue, 2) - 0.01;
     }
 
     // Method to display top 3 coffee and baked goods in index.php
