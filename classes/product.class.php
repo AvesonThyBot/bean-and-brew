@@ -35,23 +35,43 @@ class Index extends Product {
     // Properties
     private $productList = [3, 6, 8, 12, 22, 23, 27, 31];
     private $currentProduct;
+    private $discountPercentage;
 
     // Method to return the html code for products
     private function getHTML($type) {
         echo '
         <div class="col-md-3 col-lg-3 mb-4">
-            <div class="card h-100 text-bg-white" width="260px">
-                <img src="' . $this->currentProduct["product_image"] . '" class="card-img-top" alt="' . $this->currentProduct["product_name"] . ' width="260px" height="390px"">
+            <div class="card h-100 text-bg-white" style="width: 300px !important;">
+                <img src="' . $this->currentProduct["product_image"] . '" class="card-img-top" alt="' . $this->currentProduct["product_name"] . '" width="260px" height="390px">
                 <div class="card-body text-center">
-                    <h5 class="card-title"  data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="left" data-bs-content="' . $this->currentProduct["product_name"] . '">' . $this->currentProduct["product_name"] . '</h5>
-                    <p class="card-text" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="' . $this->currentProduct["product_description"] . '">' . $this->currentProduct["product_description"] . '</p>
-                    <div class="d-flex justify-content-between align-items-center mx-auto">
-                        <span class="text-black">£2.50</span>
-                        <a href="../pages/' .  $type . '?type=' . $this->currentProduct['product_id'] . '&quantity=1" class="btn btn-outline-dark">Order Coffee</a>
+                    <h5 class="card-title" data-bs-title="Name" data-bs-toggle="popover" data-bs-trigger="hover focus"  data-bs-delay="{&quot;show&quot;: 250, &quot;hide&quot;: 100}"
+                    data-bs-animation="true" data-bs-placement="left" data-bs-content="' . $this->currentProduct["product_name"] . '">' . $this->currentProduct["product_name"] . '</h5>
+                    <p class="card-text" data-bs-title="Info" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-delay="{&quot;show&quot;: 250, &quot;hide&quot;: 100}"
+                    data-bs-animation="true"  data-bs-content="' . $this->currentProduct["product_description"] . '">' . $this->currentProduct["product_description"] . '</p>
+                    <div class="d-flex justify-content-between align-items-center mx-auto user-select-none">
+                        <div class="position-relative">
+                            <span class="text-danger text-decoration-line-through fs-5">£' . $this->getDiscount(number_format($this->currentProduct['product_price'], 2)) . '</span>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' . $this->discountPercentage . '</span>
+                        </div>
+                        <span class="text-black fs-5">£' . number_format($this->currentProduct['product_price'], 2) . '</span>
+                        <a href="../pages/' . $type . '?type=' . $this->currentProduct['product_id'] . '&quantity=1" class="btn btn-outline-dark">Check Item</a>
                     </div>
                 </div>
             </div>
         </div>';
+    }
+    // Method to get discounted amount and discount back
+    private function getDiscount($price) {
+        // Get random discount value
+        $randomPercentage = rand(5, 70);
+
+        // Get Fake value
+        $fakeValue = round($price / (1 - ($randomPercentage / 100)), 2);
+
+        // Return fake value and assign random percentage
+        $this->discountPercentage =  '-' . $randomPercentage . '%';
+        $fakeValue = round($fakeValue / 0.25) * 0.25; //make the decimal be 00,25,50 or 75
+        return number_format($fakeValue, 2);
     }
 
     // Method to display top 3 coffee and baked goods in index.php

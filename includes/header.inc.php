@@ -54,7 +54,7 @@ if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_S
                         <a class="nav-link <?php echo $webpage->setActive("home") ?>" aria-current="page" href="../index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $webpage->setActive("about") ?>" href="../pages/about.php">About</a>
+                        <a class="nav-link <?php echo $webpage->setActive("about") ?>" href="../pages/about.php">About Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?php echo $webpage->setActive("coffee") ?>" href="../pages/coffee.php">Coffee</a>

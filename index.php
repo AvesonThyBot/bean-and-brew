@@ -50,12 +50,14 @@ include_once("./classes/product.class.php");
 </div>
 
 <!-- Main Body -->
-<div class="container mt-5 p-2 text-white my-2">
+<div class="container text-white my-2">
+    <h1 class="text-white fw-bold text-center">Top Selling</h1>
+    <hr class="border border-light border-2 opacity-50 rounded">
     <!-- Top Products -->
-    <div class="row">
+    <div class="row mt-4">
         <?php $coffee = new Index(); ?>
-            <?php $coffee->getTopProducts("coffee"); ?>
-            <?php $coffee->getTopProducts("baked"); ?>
+        <?php $coffee->getTopProducts("coffee"); ?>
+        <?php $coffee->getTopProducts("baked"); ?>
     </div>
 </div>
 
