@@ -10,6 +10,9 @@ include_once("dbh.class.php");
 
 // Product Class
 class Product extends Dbh {
+    protected $discountPercentage;
+
+
     // Method to retrieve 1 single line of data based off id
     protected function getProduct($id) {
         $stmt = $this->connect()->prepare("SELECT * FROM products WHERE product_id = ?");
@@ -28,6 +31,54 @@ class Product extends Dbh {
             echo $row["product_description"] . "<br>";
         }
     }
+
+    // Method to get X-Y range products
+    public function getProductsRange($start, $end) {
+        $stmt = $this->connect()->prepare("SELECT * FROM products LIMIT $start,$end");
+        $stmt->execute();
+        while ($row = $stmt->fetch()) {
+            $this->getHTML($row);
+        }
+    }
+
+    // Method to get discounted amount and discount back
+    protected function getDiscount($price, $data) {
+        // Get random discount value
+        $randomPercentage = rand(5, 50);
+
+        // Get Fake value
+        $fakeValue = round($price / (1 - ($randomPercentage / 100)), 2);
+
+        // Return fake value and assign random percentage
+        $this->discountPercentage =  '-' . $randomPercentage . '%';
+        $fakeValue = round($fakeValue / 0.50) * 0.50; //make the decimal be 00,25,50 or 75
+        $fakeValue = number_format($fakeValue, 2) - 0.01;
+        return $fakeValue >= $data['product_price'] ?  number_format($fakeValue, 2) + 0.99 : $fakeValue;
+    }
+
+    // Method to display Product
+    private function getHTML($data) {
+        echo '
+        <div class="col-md-3 col-lg-3 mb-4">
+            <div class="card h-100 text-bg-white" style="width: 300px !important;">
+                <img src="' . $data["product_image"] . '" class="card-img-top" alt="' . $data["product_name"] . '" width="260px" height="390px">
+                <div class="card-body text-center">
+                    <h5 class="card-title" data-bs-title="Name" data-bs-toggle="popover" data-bs-trigger="hover focus"  data-bs-delay="{&quot;show&quot;: 250, &quot;hide&quot;: 100}"
+                    data-bs-animation="true" data-bs-placement="left" data-bs-content="' . $data["product_name"] . '">' . $data["product_name"] . '</h5>
+                    <p class="card-text" data-bs-title="Info" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-delay="{&quot;show&quot;: 250, &quot;hide&quot;: 100}"
+                    data-bs-animation="true"  data-bs-content="' . $data["product_description"] . '">' . $data["product_description"] . '</p>
+                    <div class="d-flex justify-content-between align-items-center mx-auto user-select-none">
+                    <div class="position-relative">
+                        <span class="text-danger text-decoration-line-through fs-5">£' . $this->getDiscount(number_format($data['product_price'], 2), $data) . '</span>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' . $this->discountPercentage . '</span>
+                    </div>
+                        <span class="text-black fs-5">£' . number_format($data['product_price'], 2) . '</span>
+                        <a href="?type=' . $data['product_id'] . '&quantity=1" class="btn btn-outline-dark">Check Item</a>
+                    </div>
+                </div>
+            </div>
+        </div>';
+    }
 }
 
 // Index Class
@@ -35,7 +86,6 @@ class Index extends Product {
     // Properties
     private $productList = [3, 6, 8, 12, 22, 23, 27, 31];
     private $currentProduct;
-    private $discountPercentage;
 
     // Method to return the html code for products
     private function getHTML($type) {
@@ -50,7 +100,7 @@ class Index extends Product {
                     data-bs-animation="true"  data-bs-content="' . $this->currentProduct["product_description"] . '">' . $this->currentProduct["product_description"] . '</p>
                     <div class="d-flex justify-content-between align-items-center mx-auto user-select-none">
                         <div class="position-relative">
-                            <span class="text-danger text-decoration-line-through fs-5">£' . $this->getDiscount(number_format($this->currentProduct['product_price'], 2)) . '</span>
+                            <span class="text-danger text-decoration-line-through fs-5">£' . $this->getDiscount(number_format($this->currentProduct['product_price'], 2), $this->currentProduct) . '</span>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' . $this->discountPercentage . '</span>
                         </div>
                         <span class="text-black fs-5">£' . number_format($this->currentProduct['product_price'], 2) . '</span>
@@ -59,19 +109,6 @@ class Index extends Product {
                 </div>
             </div>
         </div>';
-    }
-    // Method to get discounted amount and discount back
-    private function getDiscount($price) {
-        // Get random discount value
-        $randomPercentage = rand(5, 70);
-
-        // Get Fake value
-        $fakeValue = round($price / (1 - ($randomPercentage / 100)), 2);
-
-        // Return fake value and assign random percentage
-        $this->discountPercentage =  '-' . $randomPercentage . '%';
-        $fakeValue = round($fakeValue / 0.50) * 0.50; //make the decimal be 00,25,50 or 75
-        return number_format($fakeValue, 2) - 0.01;
     }
 
     // Method to display top 3 coffee and baked goods in index.php

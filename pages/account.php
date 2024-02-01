@@ -12,7 +12,6 @@ include_once("../includes/header.inc.php")
 ?>
 
 
-
 <?php
 // Footer 
 include_once("../includes/footer.inc.php")

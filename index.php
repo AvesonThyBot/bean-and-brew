@@ -1,15 +1,15 @@
 <?php
-// Include the webpage class
+// Include the necessary class
 include_once("classes/webpage.class.php");
+include_once("./classes/product.class.php");
 
 // Create Object
 $webpage = new Webpage("Home - Bean and Brew", "home");
 $webpage->setStyleSheet("styles/index.css");
-$webpage->setScript("scripts/index.js");
+$webpage->setScript("scripts/code.js");
 
 // Include Header
 include_once("./includes/header.inc.php");
-include_once("./classes/product.class.php");
 ?>
 <!-- Off Canvas -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="timetable" data-bs-theme="dark">
@@ -50,16 +50,16 @@ include_once("./classes/product.class.php");
 </div>
 
 <!-- Main Body -->
-<div class="container text-white my-2">
+<main class="container text-white my-2">
     <h1 class="text-white fw-bold text-center">Top Selling</h1>
     <hr class="border border-light border-2 opacity-50 rounded">
     <!-- Top Products -->
     <div class="row mt-4">
-        <?php $coffee = new Index(); ?>
-        <?php $coffee->getTopProducts("coffee"); ?>
-        <?php $coffee->getTopProducts("baked"); ?>
+        <?php $topProducts = new Index(); ?>
+        <?php $topProducts->getTopProducts("coffee"); ?>
+        <?php $topProducts->getTopProducts("baked"); ?>
     </div>
-</div>
+</main>
 
 <?php
 // Footer 

@@ -1,3 +1,23 @@
+/* Text Truncation */
+.card-text {
+	display: -webkit-box !important;
+	-webkit-line-clamp: 2 !important;
+	-webkit-box-orient: vertical !important;
+	overflow: hidden !important;
+}
+
+.card-title {
+	display: -webkit-box !important;
+	-webkit-line-clamp: 1 !important;
+	-webkit-box-orient: vertical !important;
+	overflow: hidden !important;
+}
+
+/* Card Image */
+.card-img-top {
+	object-fit: cover;
+}
+
 footer svg:hover {
 	fill: black;
 	transition: 0.1s ease-in;
