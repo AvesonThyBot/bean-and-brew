@@ -51,7 +51,7 @@ include_once("./includes/header.inc.php");
 
 <!-- Main Body -->
 <main class="container text-white my-2">
-    <h1 class="text-white fw-bold text-center">Top Selling</h1>
+    <h1 class="text-white fw-bold text-center">Today's Top Selling</h1>
     <hr class="border border-light border-2 opacity-50 rounded">
     <!-- Top Products -->
     <div class="row mt-4">
@@ -63,5 +63,6 @@ include_once("./includes/header.inc.php");
 
 <?php
 // Footer 
-include_once("./includes/footer.inc.php")
+include_once("./includes/footer.inc.php");
+unset($webpage); // Deletes Webpage object
 ?>

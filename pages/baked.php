@@ -9,7 +9,7 @@ $webpage = new Webpage("Baked Goods - Bean and Brew", "baked");
 $webpage->setScript("../scripts/code.js");
 
 // Include Header
-include_once("../includes/header.inc.php")
+include_once("../includes/header.inc.php");
 ?>
 
 <!-- Main Body -->
@@ -23,7 +23,10 @@ include_once("../includes/header.inc.php")
     </div>
 </main>
 
+
 <?php
 // Footer 
-include_once("../includes/footer.inc.php")
+include_once("../includes/footer.inc.php");
+unset($webpage); // Deletes Webpage object
+
 ?>

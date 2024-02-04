@@ -22,3 +22,7 @@ footer svg:hover {
 	fill: black;
 	transition: 0.1s ease-in;
 }
+
+main {
+	min-height: 100dvh !important;
+}

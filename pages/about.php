@@ -8,9 +8,10 @@ $webpage = new Webpage("About - Bean and Brew", "about");
 $webpage->setStyleSheet("../styles/about.css");
 
 // Include Header
-include_once("../includes/header.inc.php")
+include_once("../includes/header.inc.php");
 ?>
 
+<!-- About Main Section -->
 <main>
     <!-- About Us Map -->
     <h1 class="text-white fw-bold text-center mt-2">Locations</h1>
@@ -100,5 +101,6 @@ include_once("../includes/header.inc.php")
 
 <?php
 // Footer 
-include_once("../includes/footer.inc.php")
+include_once("../includes/footer.inc.php");
+unset($webpage); // Deletes Webpage object
 ?>

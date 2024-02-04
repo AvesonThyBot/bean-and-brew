@@ -52,14 +52,14 @@ class Product extends Dbh {
         // Return fake value and assign random percentage
         $this->discountPercentage =  '-' . $randomPercentage . '%';
         $fakeValue = round($fakeValue / 0.50) * 0.50; //make the decimal be 00,25,50 or 75
-        $fakeValue = number_format($fakeValue, 2) - 0.01;
+        $fakeValue = number_format($fakeValue, 2);
         return $fakeValue >= $data['product_price'] ?  number_format($fakeValue, 2) + 0.99 : $fakeValue;
     }
 
     // Method to display Product
     private function getHTML($data) {
         echo '
-        <div class="col-md-3 col-lg-3 mb-4">
+        <div class="col-md-3 col-lg-3 mb-4 d-flex justify-content-center">
             <div class="card h-100 text-bg-white" style="width: 300px !important;">
                 <img src="' . $data["product_image"] . '" class="card-img-top" alt="' . $data["product_name"] . '" width="260px" height="390px">
                 <div class="card-body text-center">
@@ -84,8 +84,20 @@ class Product extends Dbh {
 // Index Class
 class Index extends Product {
     // Properties
-    private $productList = [3, 6, 8, 12, 22, 23, 27, 31];
+    private $productList = [];
     private $currentProduct;
+
+    // Construct Method
+    public function __construct() {
+        // For Loop to Assign productlist with 8 products
+        for ($i = 0; $i < 8; $i++) {
+            $random = rand(1, 40);
+            while (in_array($random, $this->productList)) {
+                $random = rand(1, 40);
+            }
+            $this->productList[] += $random;
+        }
+    }
 
     // Method to return the html code for products
     private function getHTML($type) {

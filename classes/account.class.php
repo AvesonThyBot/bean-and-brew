@@ -10,10 +10,22 @@ include_once("dbh.class.php");
 
 // Class Login
 class Login extends Dbh {
+    // Method to get account type
+    public function getType() {
+        return "Login";
+    }
 }
 // Class Register
 class Register extends Dbh {
+    // Method to get account type
+    public function getType() {
+        return "Register";
+    }
 }
 // Class Account Management
 class Account extends Dbh {
+    // Method to get account type
+    public function getType() {
+        return "Account Management";
+    }
 }

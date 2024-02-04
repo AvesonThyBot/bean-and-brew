@@ -9,7 +9,7 @@ $webpage = new Webpage("Coffee - Bean and Brew", "coffee");
 $webpage->setScript("../scripts/code.js");
 
 // Include Header
-include_once("../includes/header.inc.php")
+include_once("../includes/header.inc.php");
 ?>
 
 <!-- Main Body -->
@@ -26,5 +26,6 @@ include_once("../includes/header.inc.php")
 
 <?php
 // Footer 
-include_once("../includes/footer.inc.php")
+include_once("../includes/footer.inc.php");
+unset($webpage); // Deletes Webpage object
 ?>
