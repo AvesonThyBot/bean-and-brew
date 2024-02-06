@@ -6,13 +6,15 @@ include_once("../classes/webpage.class.php");
 
 // Create Account Object
 if (isset($_GET["type"])) {
-    $account = new Account();
+    $account = new Account($_GET["type"]);
 }
 
-// Logout
-if (isset($_GET["type"]) && $_GET["type"] == "logout") {
-    // logout code
+// Submit Button
+if (isset($_POST["btnSubmit"])) {
+    $account->validateData($_POST);
 }
+
+
 
 // Create Object
 $webpage = new Webpage('Account - Bean and Brew', "account");
@@ -36,23 +38,23 @@ include_once("../includes/header.inc.php");
         <form method="POST" class="row g-3 needs-validation gap-1 d-flex justify-content-center" novalidate>
             <!-- Email -->
             <div class="has-validation">
-                <label for="loginEmail">Email</label>
-                <input type="email" value="" class="form-control" placeholder="example@beanandbrew.com" name="loginEmail" id="loginEmail" required>
+                <label for="email">Email</label>
+                <input type="email" value="" class="form-control" placeholder="example@beanandbrew.com" name="email" id="email" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>
             </div>
             <!-- Password -->
             <div class="has-validation">
-                <label for="loginPassword" class="form-label">Password</label>
-                <input value="" type="password" class="form-control" placeholder="Password_123" name="loginPassword" id="loginPassword" required>
+                <label for="password" class="form-label">Password</label>
+                <input value="" type="password" class="form-control" placeholder="Password" name="password" id="password" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>
             </div>
             <!-- Submit -->
             <div>
-                <button class="btn btn-outline-light float-end" type="submit" name="btnLogin">Login</button>
+                <button class="btn btn-outline-light float-end" type="submit" name="btnSubmit">Login</button>
             </div>
         </form>
 
@@ -66,40 +68,48 @@ include_once("../includes/header.inc.php");
         <!-- Registry Form -->
         <form method="POST" class="row g-3 needs-validation gap-1 d-flex justify-content-center" novalidate>
             <!-- First Name -->
-            <div class=" has-validation">
-                <label for="registerFirstName">First name</label>
-                <input type="text" value="" class="form-control" placeholder="John" name="registerFirstName" id="registerFirstName" required>
+            <div class="has-validation">
+                <label for="firstName">First name</label>
+                <input type="text" value="" class="form-control" placeholder="John" name="firstName" id="firstName" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>
             </div>
             <!-- Last Name -->
             <div class="has-validation">
-                <label for="registerLastName">Last name</label>
-                <input type="text" value="" class="form-control" placeholder="Doe" name="registerLastName" id="registerLastName" required>
+                <label for="lastName">Last name</label>
+                <input type="text" value="" class="form-control" placeholder="Doe" name="lastName" id="lastName" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>
             </div>
             <!-- Email -->
             <div class="has-validation">
-                <label for="registerEmail">Email</label>
-                <input type="email" value="" class="form-control" placeholder="example@beanandbrew.com" name="registerEmail" id="registerEmail" required>
+                <label for="email">Email</label>
+                <input type="email" value="" class="form-control" placeholder="example@beanandbrew.com" name="email" id="email" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>
             </div>
             <!-- Password -->
-            <div class=" has-validation">
-                <label for="registerPassword">Password</label>
-                <input type="password" value="" class="form-control" placeholder="Password_123" name="registerPassword" id="registerPassword" required>
+            <div class="has-validation">
+                <label for="password">Password</label>
+                <input type="password" value="" class="form-control" placeholder="Password" name="password" id="password" required>
+                <div class="invalid-feedback">
+                    <!-- Invalid input-->
+                </div>
+            </div>
+            <!-- Confirm Password -->
+            <div class="has-validation">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" value="" class="form-control" placeholder="Confirm Password" name="confirmPassword" id="confirmPassword" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>
             </div>
             <!-- Submit -->
             <div>
-                <button class="btn btn-outline-light float-end" type="submit" name="btnRegister">Register</button>
+                <button class="btn btn-outline-light float-end" type="submit" name="btnSubmit">Register</button>
             </div>
         </form>
     </section>
@@ -112,24 +122,24 @@ include_once("../includes/header.inc.php");
         <form method="POST" class="row needs-validation gap-1 d-flex justify-content-center" novalidate>
             <!-- Email -->
             <div class="has-validation">
-                <label for="accountEmail">Email</label>
-                <input type="text" class="form-control" value="example@beanandbew.com" name="accountEmail" id="accountEmail" required>
+                <label for="email">Email</label>
+                <input type="text" class="form-control" value="example@beanandbew.com" name="email" id="email" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>
             </div>
             <!-- First name -->
             <div class="has-validation">
-                <label for="accountFirstName">First name</label>
-                <input type="text" class="form-control" value="John" name="accountFirstName" id="accountFirstName" required>
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" value="John" name="firstName" id="firstName" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>
             </div>
             <!-- Last name -->
             <div class="has-validation">
-                <label for="accountLastName">Last name</label>
-                <input type="text" class="form-control" value="Doe" name="accountLastName" id="accountLastName" required>
+                <label for="lastName">Last name</label>
+                <input type="text" class="form-control" value="Doe" name="lastName" id="lastName" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>
@@ -137,7 +147,7 @@ include_once("../includes/header.inc.php");
             <!-- Submit -->
             <div class="text-end">
                 <button type="button" class="btn btn-light">Edit</button>
-                <button class="btn btn-outline-light ms-1" type="submit" name="updateBtn">Update</button>
+                <button class="btn btn-outline-light ms-1" type="submit" name="btnSubmit">Update</button>
             </div>
         </form>
     </section>
