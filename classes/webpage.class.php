@@ -26,12 +26,12 @@ class Webpage {
 
     // Method to get title
     public function getTitle() {
-        echo $this->title;
+        echo strlen($this->title) == 0 ? "Bean and Brew" : $this->title;
     }
 
     // Method to display timetable button
     public function showButton() {
-        echo strpos($_SERVER['PHP_SELF'], 'index.php') ? '' : 'd-none';
+        echo strpos($_SERVER['PHP_SELF'], 'account.php') ? 'd-none' : '';
     }
 
     // Method to set stylesheet

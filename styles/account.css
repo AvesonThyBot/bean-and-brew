@@ -1,0 +1,5 @@
+/* Input Group */
+.input-group input:focus,
+.input-group input:active {
+	box-shadow: none !important;
+}

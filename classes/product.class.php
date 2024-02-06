@@ -102,7 +102,7 @@ class Index extends Product {
     // Method to return the html code for products
     private function getHTML($type) {
         echo '
-        <div class="col-md-3 col-lg-3 mb-4">
+        <div class="col-md-3 col-lg-3 mb-4 d-flex justify-content-center">
             <div class="card h-100 text-bg-white" style="width: 300px !important;">
                 <img src="' . $this->currentProduct["product_image"] . '" class="card-img-top" alt="' . $this->currentProduct["product_name"] . '" width="260px" height="390px">
                 <div class="card-body text-center">
