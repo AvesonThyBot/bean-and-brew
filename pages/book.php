@@ -2,9 +2,15 @@
 
 // Include the necessary class
 include_once("../classes/webpage.class.php");
+include_once("../classes/account.class.php");
 
 // Create Object
 $webpage = new Webpage("Book A Space - Bean and Brew", "book");
+
+// Redirect if not logged in
+if (count($_COOKIE) <= 0) {
+    header("Location:account.php?type=register");
+}
 
 // Include Header
 include_once("../includes/header.inc.php");

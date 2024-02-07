@@ -89,8 +89,11 @@ if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_S
                         <a class="nav-link dropdown-toggle <?php echo $webpage->setActive("account") ? 'text-bg-light' : 'text-bg-dark'  ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end w-100 mw-100 mt-2">
-                            <?php if (isset($_COOKIE["is_logged_in"])) { ?>
-                                <li><a class="dropdown-item" href="profile.php"><?php echo $row['username']; ?></a></li>
+                            <?php if (isset($_COOKIE["customerID"])) { ?>
+                                <li><a class="dropdown-item" href="../pages/account.php?type=account"><?php
+                                                                                                        $accountName = new Account("", "", "", "", "", "");
+                                                                                                        $accountName->getName($_COOKIE["customerID"]);
+                                                                                                        unset($accountName); ?></a></li>
                                 <li>
                                     <hr class="dropdown-divider" />
                                 </li>

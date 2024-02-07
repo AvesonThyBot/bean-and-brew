@@ -12,79 +12,108 @@ include_once("dbh.class.php");
 class Account extends Dbh {
     // Properties
     private $type;
-    private $userId;
     private $firstName;
     private $lastName;
     private $email;
     private $pwd;
+    private $inputValues = [];
     private $errors = array();
 
     // Construct
-    public function __construct($type) {
-        if (in_array($type, ["login", "register", "account", "logout"])) {
+    public function __construct($firstName, $lastName, $email, $pwd, $confirmPassword, $type) {
+        // Hold Input Values
+        $this->inputValues = [
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'email' => $email,
+            'password' => $pwd,
+            'confirmPassword' => $confirmPassword,
+        ];
+
+        // Assign all information
+        $this->validateName($firstName, "firstName");
+        $this->validateName($lastName, "lastName");
+        $this->validateEmail($email);
+        $this->validatePassword($pwd, $confirmPassword);
+
+        // Type Iteration
+        if (in_array($type, ["login", "register", "account"])) {
             $this->type = $type;
         }
     }
 
     // ------------------------------ Getters & Setters ------------------------------
 
+    // GETTER Method to get account type
+    public function getType() {
+        return $this->type;
+    }
 
-    // ------------------------------ General Validate Methods ------------------------------
+    // GETTER Method to get account name
+    public function getName($id) {
+        $stmt = $this->connect()->prepare("SELECT firstName FROM customer WHERE customerID = ?");
+        $stmt->execute([$id]);
+        $result = $stmt->fetch();
+        echo ucfirst($result["firstName"]);
+    }
 
-    // Method to validate post data
-    public function validateData($data) {
-        if ($this->type == "login") {
-            $this->validateLogin($data);
-        } else if ($this->type == "register") {
-            $this->validateRegister($data);
-        } else if ($this->type == "account") {
-            $this->validateAccount($data);
+    // GETTER Method to get Input Values
+    public function getValue($entryType) {
+        echo $this->inputValues[$entryType];
+    }
+
+    // GETTER Method to get is-invalid/is-valid for Register & Account Managment
+    public function getValid($entryType) {
+        echo in_array($entryType, $this->errors) ? "is-invalid" : "is-valid";
+    }
+
+    // GETTER Method to get is-invalid/is-valid for Login
+    public function getValidLogin($email, $pwd) {
+        // Logic for getting valid login
+    }
+
+    // ------------------------------ Confirm Account Type Methods ------------------------------
+
+    // Method to Login user
+    public function confirmLogin() {
+    }
+
+    // Method to Register user
+    public function confirmRegister() {
+        if (count($this->errors) == 0) {
+            // Add user
+            $stmt = $this->connect()->prepare("INSERT INTO customer (firstName, lastName, email, password_text) VALUES (?,?,?,?)");
+            $hashedPwd = password_hash($this->pwd, CRYPT_BLOWFISH);
+            $stmt->execute([$this->inputValues['firstName'], $this->inputValues['lastName'], $this->inputValues['email'], $hashedPwd]);
         }
-
-        // Return if theres any errors
-        print_r($this->errors);
-        echo "<br>" . $this->firstName . "<br>" . $this->lastName . "<br>" . $this->email . "<br>" . $this->pwd;
+        // unset statement
+        $stmt = null;
     }
 
-    // Method to validate Login
-    private function validateLogin($data) {
-        // Login Logic
-    }
-
-    // Method to validate Register
-    private function validateRegister($data) {
-        // Validate Each Inputs
-        $this->validateName($data["firstName"], "firstName");
-        $this->validateName($data["lastName"], "lastName");
-        $this->validateEmail($data["email"]);
-        $this->validatePassword($data["password"], $data["confirmPassword"]);
-    }
-
-    // Method to validate Account Update
-    private function validateAccount($data) {
-        // Validate Each Inputs
-        $this->validateName($data["firstName"], "firstName");
-        $this->validateName($data["lastName"], "lastName");
-        $this->validateEmail($data["email"]);
-        $this->validatePassword($data["password"], $data["confirmPassword"]);
+    // Method to Update Account for user
+    public function confirmAccount() {
     }
 
     // ------------------------------ Validate Inputs Methods ------------------------------
 
     // Method to Validate Name
     private function validateName($name, $type) {
+        // Validate Name
         if (empty($name) || !ctype_alpha($name) || (strlen($name) < 3 || strlen($name) > 20)) {
             array_push($this->errors, $type == "firstName" ? "firstName" : "lastName");
         } else {
+            // Assign Value
             $type == "firstName" ? $this->firstName = $name : $this->lastName = $name;
         }
     }
 
     // Method to Validate Email
     private function validateEmail($email) {
+        // Validate Email
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             array_push($this->errors, "email");
         } else {
+            // Assign Value
             $this->email = $email;
         }
     }
@@ -92,11 +121,38 @@ class Account extends Dbh {
     // Method to Validate Password
     private function validatePassword($password, $confirmPassword) {
         // Validate Password
-        if (empty($password) || (strlen($password) < 5 || strlen($password) > 60) || $password !== $confirmPassword) {
+        if (empty($password) || strlen($password) < 5) {
             array_push($this->errors, "password");
-        } else {
-            $this->pwd = $password;
         }
+        // Validate Confirmation Password
+        if (empty($confirmPassword) || $password !== $confirmPassword) {
+            array_push($this->errors, "confirmPassword");
+        }
+
+        // Assign Value
+        if ((in_array("password", $this->errors) || in_array("confirmPassword", $this->errors)))  $this->pwd = $password;
+    }
+
+    // Method to check if email exists
+    private function checkEmail($email) {
+        $stmt = $this->connect()->prepare("INSERT INTO customer (firstName, lastName, email, password_text) VALUES (?,?,?,?)");
+        $hashedPwd = password_hash($this->pwd, CRYPT_BLOWFISH);
+        $stmt->execute([$this->inputValues['firstName'], $this->inputValues['lastName'], $this->inputValues['email'], $hashedPwd]);
+    }
+
+    // ------------------------------ Other Methods ------------------------------
+
+    // Method to CREATE cookies
+    public function createCookies() {
+        $stmt = $this->connect()->prepare("SELECT customerID FROM customer WHERE email = ?");
+        $stmt->execute([$this->inputValues['email']]);
+        $userId = $stmt->fetch();
+        setcookie("customerID", $userId["customerID"], time() + (86400 * 30), "/");
+    }
+
+    // Method to DELETE cookies
+    public function deleteCookies() {
+        setcookie("customerID", "", time() - 3600, "/");
     }
 
     // Method to confirm before updating info

@@ -3,15 +3,45 @@
 // Include the necessary class
 include_once("../classes/account.class.php");
 include_once("../classes/webpage.class.php");
+include_once("../classes/account.class.php");
 
-// Create Account Object
-if (isset($_GET["type"])) {
-    $account = new Account($_GET["type"]);
+// Create Account Object & Fill entry when clicked
+$account = new Account($_POST["firstName"] ?? '', $_POST["lastName"] ?? '', $_POST["email"] ?? '', $_POST["password"] ?? '', $_POST["confirmPassword"] ?? '', $_GET["type"] ?? '');
+
+// Confirm Register
+if (isset($_POST["btnSubmit"])) {
+    switch ($account->getType()) {
+        case 'login': // confirm login
+            $account->confirmLogin();
+            break;
+        case 'register': // confirm register
+            $account->confirmRegister();
+            $account->createCookies();
+            header("Location:../index.php");
+            exit();
+            break;
+        case 'account': // confirm account update
+            $account->confirmAccount();
+            break;
+        default: // incase its nothing or logout
+            break;
+    }
 }
 
-// Submit Button
-if (isset($_POST["btnSubmit"])) {
-    $account->validateData($_POST);
+// Redirect if logged in
+if (isset($_COOKIE["customerID"]) && ($_GET["type"] !== "account" && $_GET["type"] !== "logout")) {
+    header("Location:../index.php");
+    exit();
+} else if (!isset($_COOKIE["customerID"]) && $_GET["type"] == "account") {
+    header("Location:account.php?type=register");
+    exit();
+}
+
+// Logout
+if (isset($_GET["type"]) && $_GET["type"] == "logout") {
+    $account->deleteCookies();
+    header("Location:account.php?type=register");
+    exit();
 }
 
 
@@ -25,8 +55,6 @@ $webpage->setStyleSheet("../styles/account.css");
 include_once("../includes/header.inc.php");
 ?>
 
-
-
 <!-- Main Section -->
 <main>
     <!-- Login -->
@@ -39,17 +67,15 @@ include_once("../includes/header.inc.php");
             <!-- Email -->
             <div class="has-validation">
                 <label for="email">Email</label>
-                <input type="email" value="" class="form-control" placeholder="example@beanandbrew.com" name="email" id="email" required>
-                <div class="invalid-feedback">
-                    <!-- Invalid input-->
-                </div>
+                <input type="email" value="<?php $account->getValue("email"); ?>" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValidLogin("", ""); ?>" placeholder="example@beanandbrew.com" name="email" id="email" required>
             </div>
             <!-- Password -->
             <div class="has-validation">
                 <label for="password" class="form-label">Password</label>
-                <input value="" type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+                <input value="<?php $account->getValue("password"); ?>" type="password" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValidLogin("", ""); ?>" placeholder="Password" name="password" id="password" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
+                    Invalid login credentials
                 </div>
             </div>
             <!-- Submit -->
@@ -70,41 +96,46 @@ include_once("../includes/header.inc.php");
             <!-- First Name -->
             <div class="has-validation">
                 <label for="firstName">First name</label>
-                <input type="text" value="" class="form-control" placeholder="John" name="firstName" id="firstName" required>
+                <input type="text" value="<?php $account->getValue("firstName"); ?>" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValid("firstName"); ?>" placeholder="John" name="firstName" id="firstName" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
+                    First Name must be above 3 letters and under 20 letters.
                 </div>
             </div>
             <!-- Last Name -->
             <div class="has-validation">
                 <label for="lastName">Last name</label>
-                <input type="text" value="" class="form-control" placeholder="Doe" name="lastName" id="lastName" required>
+                <input type="text" value="<?php $account->getValue("lastName"); ?>" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValid("lastName"); ?>" placeholder="Doe" name="lastName" id="lastName" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
+                    Last Name must be above 3 letters and under 20 letters.
                 </div>
             </div>
             <!-- Email -->
             <div class="has-validation">
                 <label for="email">Email</label>
-                <input type="email" value="" class="form-control" placeholder="example@beanandbrew.com" name="email" id="email" required>
+                <input type="email" value="<?php $account->getValue("email"); ?>" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValid("email"); ?>" placeholder="example@beanandbrew.com" name="email" id="email" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
+                    Email is invalid or taken, please try again.
                 </div>
             </div>
             <!-- Password -->
             <div class="has-validation">
                 <label for="password">Password</label>
-                <input type="password" value="" class="form-control" placeholder="Password" name="password" id="password" required>
+                <input type="password" value="<?php $account->getValue("password"); ?>" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValid("password"); ?>" placeholder="Password" name="password" id="password" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
+                    Password must be atleast 5 characters.
                 </div>
             </div>
             <!-- Confirm Password -->
             <div class="has-validation">
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" value="" class="form-control" placeholder="Confirm Password" name="confirmPassword" id="confirmPassword" required>
+                <input type="password" value="<?php $account->getValue("confirmPassword"); ?>" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValid("confirmPassword"); ?>" placeholder="Confirm Password" name="confirmPassword" id="confirmPassword" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
+                    Password does not match
                 </div>
             </div>
             <!-- Submit -->
@@ -123,7 +154,7 @@ include_once("../includes/header.inc.php");
             <!-- Email -->
             <div class="has-validation">
                 <label for="email">Email</label>
-                <input type="text" class="form-control" value="example@beanandbew.com" name="email" id="email" required>
+                <input type="text" value="<?php $account->getValue("email"); ?>" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValid("email"); ?>" value="example@beanandbew.com" name="email" id="email" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>
@@ -131,7 +162,7 @@ include_once("../includes/header.inc.php");
             <!-- First name -->
             <div class="has-validation">
                 <label for="firstName">First name</label>
-                <input type="text" class="form-control" value="John" name="firstName" id="firstName" required>
+                <input type="text" value="<?php $account->getValue("firstName"); ?>" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValid("firstName"); ?>" value="John" name="firstName" id="firstName" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>
@@ -139,7 +170,7 @@ include_once("../includes/header.inc.php");
             <!-- Last name -->
             <div class="has-validation">
                 <label for="lastName">Last name</label>
-                <input type="text" class="form-control" value="Doe" name="lastName" id="lastName" required>
+                <input type="text" value="<?php $account->getValue("lastName"); ?>" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValid("lastName"); ?>" value="Doe" name="lastName" id="lastName" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                 </div>

@@ -2,11 +2,17 @@
 // Include the necessary class
 include_once("../classes/webpage.class.php");
 include_once("../classes/product.class.php");
+include_once("../classes/account.class.php");
 
 
 // Create Object
 $webpage = new Webpage("Baked Goods - Bean and Brew", "baked");
 $webpage->setScript("../scripts/code.js");
+
+// Redirect if not logged in
+if (count($_COOKIE) <= 0) {
+    header("Location:account.php?type=register");
+}
 
 // Include Header
 include_once("../includes/header.inc.php");
