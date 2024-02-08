@@ -10,9 +10,7 @@ Link-
 
 # TO DO:
 
-- Fix validation not showing
 - reduce code
 - add login
-- validate to check if email is taken
 - add account management/update
 - make auto class loader include

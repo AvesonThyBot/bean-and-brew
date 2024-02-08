@@ -57,6 +57,15 @@ class Account extends Dbh {
         echo ucfirst($result["firstName"]);
     }
 
+    // Method to get hashed password
+    private function getHashedPassword($email) {
+        $stmt = $this->connect()->prepare("SELECT password_text FROM customer WHERE email = ?");
+        $stmt->execute([$email]);
+
+        // Return hashed password
+        return $stmt->fetch();
+    }
+
     // GETTER Method to get Input Values
     public function getValue($entryType) {
         echo $this->inputValues[$entryType];
@@ -67,15 +76,31 @@ class Account extends Dbh {
         echo in_array($entryType, $this->errors) ? "is-invalid" : "is-valid";
     }
 
-    // GETTER Method to get is-invalid/is-valid for Login
+    // GETTER Method to validate Login Credentials
     public function getValidLogin($email, $pwd) {
-        // Logic for getting valid login
+        // Validate Email
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL) || !$this->checkEmail($email)) {
+            array_push($this->errors, "email");
+        } else {
+            // Assign Value
+            $this->email = $email;
+        }
+
+        // Validate Password
+        if (empty($password) || !password_verify($pwd, $this->getHashedPassword($email))) {
+            array_push($this->errors, "password");
+        } else {
+            // Assign Value
+            $this->pwd = $pwd;
+        }
     }
 
     // ------------------------------ Confirm Account Type Methods ------------------------------
 
     // Method to Login user
     public function confirmLogin() {
+        if (count($this->errors) == 0) {
+        }
     }
 
     // Method to Register user
@@ -84,10 +109,14 @@ class Account extends Dbh {
             // Add user
             $stmt = $this->connect()->prepare("INSERT INTO customer (firstName, lastName, email, password_text) VALUES (?,?,?,?)");
             $hashedPwd = password_hash($this->pwd, CRYPT_BLOWFISH);
-            $stmt->execute([$this->inputValues['firstName'], $this->inputValues['lastName'], $this->inputValues['email'], $hashedPwd]);
+            $result = $stmt->execute([$this->inputValues['firstName'], $this->inputValues['lastName'], $this->inputValues['email'], $hashedPwd]);
+
+            // unset statement
+            $stmt = null;
+
+            // return result
+            return $result;
         }
-        // unset statement
-        $stmt = null;
     }
 
     // Method to Update Account for user
@@ -110,7 +139,7 @@ class Account extends Dbh {
     // Method to Validate Email
     private function validateEmail($email) {
         // Validate Email
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL) || $this->checkEmail($email)) {
             array_push($this->errors, "email");
         } else {
             // Assign Value
@@ -135,10 +164,14 @@ class Account extends Dbh {
 
     // Method to check if email exists
     private function checkEmail($email) {
-        $stmt = $this->connect()->prepare("INSERT INTO customer (firstName, lastName, email, password_text) VALUES (?,?,?,?)");
-        $hashedPwd = password_hash($this->pwd, CRYPT_BLOWFISH);
-        $stmt->execute([$this->inputValues['firstName'], $this->inputValues['lastName'], $this->inputValues['email'], $hashedPwd]);
+        $stmt = $this->connect()->prepare("SELECT * FROM customer WHERE email = ?");
+        $stmt->execute([$email]);
+
+        // Return boolean result if email is in use
+        return $stmt->rowCount() > 0;
     }
+
+
 
     // ------------------------------ Other Methods ------------------------------
 
