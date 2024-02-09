@@ -30,15 +30,20 @@ class Account extends Dbh {
             'confirmPassword' => $confirmPassword,
         ];
 
-        // Assign all information
-        $this->validateName($firstName, "firstName");
-        $this->validateName($lastName, "lastName");
-        $this->validateEmail($email);
-        $this->validatePassword($pwd, $confirmPassword);
-
         // Type Iteration
         if (in_array($type, ["login", "register", "account"])) {
             $this->type = $type;
+        }
+
+        // Assign all information
+        if ($this->type == "login") {
+            $this->validateLoginEmail($email);
+            $this->validateLoginPassword($pwd);
+        } else {
+            $this->validateName($firstName, "firstName");
+            $this->validateName($lastName, "lastName");
+            $this->validateEmail($email);
+            $this->validatePassword($pwd, $confirmPassword);
         }
     }
 
@@ -58,7 +63,7 @@ class Account extends Dbh {
     }
 
     // Method to get hashed password
-    private function getHashedPassword($email) {
+    public function getHashedPassword($email) {
         $stmt = $this->connect()->prepare("SELECT password_text FROM customer WHERE email = ?");
         $stmt->execute([$email]);
 
@@ -74,25 +79,6 @@ class Account extends Dbh {
     // GETTER Method to get is-invalid/is-valid for Register & Account Managment
     public function getValid($entryType) {
         echo in_array($entryType, $this->errors) ? "is-invalid" : "is-valid";
-    }
-
-    // GETTER Method to validate Login Credentials
-    public function getValidLogin($email, $pwd) {
-        // Validate Email
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL) || !$this->checkEmail($email)) {
-            array_push($this->errors, "email");
-        } else {
-            // Assign Value
-            $this->email = $email;
-        }
-
-        // Validate Password
-        if (empty($password) || !password_verify($pwd, $this->getHashedPassword($email))) {
-            array_push($this->errors, "password");
-        } else {
-            // Assign Value
-            $this->pwd = $pwd;
-        }
     }
 
     // ------------------------------ Confirm Account Type Methods ------------------------------
@@ -171,7 +157,28 @@ class Account extends Dbh {
         return $stmt->rowCount() > 0;
     }
 
+    // Method to validate login email
+    private function validateLoginEmail($email) {
+        // Validate Login email
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL) || !$this->checkEmail($email)) {
+            array_push($this->errors, "email");
+        } else {
+            // Assign Value
+            $this->email = $email;
+        }
+    }
 
+    // Method to validate login password
+    private function validateLoginPassword($pwd) {
+        // Validate Password
+        $hashedPwd = $this->getHashedPassword($this->email)["password_text"] ?? '';
+        if (!empty($pwd) || password_verify($pwd, $hashedPwd)) {
+            // Assign Value
+            $this->pwd = $pwd;
+        } else {
+            array_push($this->errors, "password");
+        }
+    }
 
     // ------------------------------ Other Methods ------------------------------
 

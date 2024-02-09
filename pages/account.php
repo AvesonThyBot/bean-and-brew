@@ -52,8 +52,6 @@ if (isset($_GET["type"]) && $_GET["type"] == "logout") {
     exit();
 }
 
-
-
 // Create Object
 $webpage = new Webpage('Account - Bean and Brew', "account");
 $webpage->setScript("../scripts/account.js");
@@ -75,12 +73,12 @@ include_once("../includes/header.inc.php");
             <!-- Email -->
             <div class="has-validation">
                 <label for="email">Email</label>
-                <input type="email" value="<?php $account->getValue("email"); ?>" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValidLogin($_POST["email"], $_POST["password"]); ?>" placeholder="example@beanandbrew.com" name="email" id="email" required>
+                <input type="email" value="<?php $account->getValue("email"); ?>" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValid("email"); ?>" placeholder="example@beanandbrew.com" name="email" id="email" required>
             </div>
             <!-- Password -->
             <div class="has-validation">
                 <label for="password" class="form-label">Password</label>
-                <input value="<?php $account->getValue("password"); ?>" type="password" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValidLogin("email", "password"); ?>" placeholder="Password" name="password" id="password" required>
+                <input value="<?php $account->getValue("password"); ?>" type="password" class="form-control <?php if (isset($_POST["btnSubmit"])) $account->getValid("password"); ?>" placeholder="Password" name="password" id="password" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                     Invalid login credentials
