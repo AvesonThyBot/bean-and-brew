@@ -11,6 +11,8 @@ Link-
 # TO DO:
 
 - reduce code
-- add login
 - add account management/update
 - make auto class loader include
+- add shopping cart page
+- add preview item information
+- add shopping cart system

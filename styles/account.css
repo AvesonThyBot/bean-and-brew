@@ -3,3 +3,10 @@
 .input-group input:active {
 	box-shadow: none !important;
 }
+
+/* Disable Input Css */
+.disable-input {
+	pointer-events: none;
+	user-select: text;
+	background-color: rgba(255, 255, 255, 0.9) !important;
+}

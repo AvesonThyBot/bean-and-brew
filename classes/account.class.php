@@ -62,13 +62,20 @@ class Account extends Dbh {
         echo ucfirst($result["firstName"]);
     }
 
-    // Method to get hashed password
-    public function getHashedPassword($email) {
+    // GETTER Method to get row of data
+    private function getRow($id) {
+        $stmt = $this->connect()->prepare("SELECT * FROM customer WHERE customerID = ?");
+        $stmt->execute([$id]);
+        return ($stmt->fetch());
+    }
+
+    // GETTER Method to get hashed password
+    private function getHashedPassword($email) {
         $stmt = $this->connect()->prepare("SELECT password_text FROM customer WHERE email = ?");
         $stmt->execute([$email]);
 
         // Return hashed password
-        return $stmt->fetch();
+        return  $stmt->rowCount() !== 0 ? $stmt->fetch()["password_text"] : "";
     }
 
     // GETTER Method to get Input Values
@@ -76,9 +83,31 @@ class Account extends Dbh {
         echo $this->inputValues[$entryType];
     }
 
+    // GETTER Method to get Input Values
+    public function getAccountValue($id, $entryType) {
+        // Get result and assign
+        $result = $this->getRow($id);
+
+        // Iterate which value to display
+        if ($this->inputValues[$entryType] == "") {
+            return $result[$entryType];
+        } else {
+            return $this->inputValues[$entryType];
+        }
+    }
+
     // GETTER Method to get is-invalid/is-valid for Register & Account Managment
     public function getValid($entryType) {
         echo in_array($entryType, $this->errors) ? "is-invalid" : "is-valid";
+    }
+
+    // GETTER Method to get is-invalid/is-valid for Register & Account Managment
+    public function getValidEmail($currentEmail) {
+        if (($this->checkEmail($this->email) && $this->inputValues["email"] == $currentEmail) || !filter_var($currentEmail, FILTER_VALIDATE_EMAIL) && !$this->checkEmail($this->email)) {
+            echo "is-valid";
+        } else {
+            echo  "is-invalid";
+        }
     }
 
     // ------------------------------ Confirm Account Type Methods ------------------------------
@@ -86,6 +115,8 @@ class Account extends Dbh {
     // Method to Login user
     public function confirmLogin() {
         if (count($this->errors) == 0) {
+            $this->createCookies();
+            return true;
         }
     }
 
@@ -145,7 +176,7 @@ class Account extends Dbh {
         }
 
         // Assign Value
-        if ((in_array("password", $this->errors) || in_array("confirmPassword", $this->errors)))  $this->pwd = $password;
+        if (!(in_array("password", $this->errors) || in_array("confirmPassword", $this->errors)))  $this->pwd = $password;
     }
 
     // Method to check if email exists
@@ -171,12 +202,12 @@ class Account extends Dbh {
     // Method to validate login password
     private function validateLoginPassword($pwd) {
         // Validate Password
-        $hashedPwd = $this->getHashedPassword($this->email)["password_text"] ?? '';
-        if (!empty($pwd) || password_verify($pwd, $hashedPwd)) {
+        $hashedPwd = $this->getHashedPassword($this->email);
+        if (empty($pwd) || !password_verify($pwd, $hashedPwd)) {
+            array_push($this->errors, "password");
+        } else {
             // Assign Value
             $this->pwd = $pwd;
-        } else {
-            array_push($this->errors, "password");
         }
     }
 
