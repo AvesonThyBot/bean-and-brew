@@ -16,11 +16,15 @@ class Account extends Dbh {
     private $lastName;
     private $email;
     private $pwd;
+    private $userId;
     private $inputValues = [];
-    private $errors = array();
+    public $errors = array();
 
     // Construct
-    public function __construct($firstName, $lastName, $email, $pwd, $confirmPassword, $type) {
+    public function __construct($firstName, $lastName, $email, $pwd, $confirmPassword, $type, $userId) {
+        // Assign UserID
+        $this->userId = $userId;
+
         // Hold Input Values
         $this->inputValues = [
             'firstName' => $firstName,
@@ -39,10 +43,15 @@ class Account extends Dbh {
         if ($this->type == "login") {
             $this->validateLoginEmail($email);
             $this->validateLoginPassword($pwd);
-        } else {
+        } elseif ($this->type == "register") {
             $this->validateName($firstName, "firstName");
             $this->validateName($lastName, "lastName");
             $this->validateEmail($email);
+            $this->validatePassword($pwd, $confirmPassword);
+        } else {
+            $this->validateName($firstName, "firstName");
+            $this->validateName($lastName, "lastName");
+            $this->getValidEmail($email);
             $this->validatePassword($pwd, $confirmPassword);
         }
     }
@@ -55,11 +64,19 @@ class Account extends Dbh {
     }
 
     // GETTER Method to get account name
-    public function getName($id) {
+    public function getName() {
         $stmt = $this->connect()->prepare("SELECT firstName FROM customer WHERE customerID = ?");
-        $stmt->execute([$id]);
+        $stmt->execute([$this->userId]);
         $result = $stmt->fetch();
         echo ucfirst($result["firstName"]);
+    }
+
+    // GETTER Method to get account name
+    public function getEmail() {
+        $stmt = $this->connect()->prepare("SELECT email FROM customer WHERE customerID = ?");
+        $stmt->execute([$this->userId]);
+        $result = $stmt->fetch();
+        return ($result["email"]);
     }
 
     // GETTER Method to get row of data
@@ -102,11 +119,16 @@ class Account extends Dbh {
     }
 
     // GETTER Method to get is-invalid/is-valid for Register & Account Managment
-    public function getValidEmail($currentEmail) {
-        if (($this->checkEmail($this->email) && $this->inputValues["email"] == $currentEmail) || !filter_var($currentEmail, FILTER_VALIDATE_EMAIL) && !$this->checkEmail($this->email)) {
-            echo "is-valid";
+    public function getValidEmail($email) {
+        // Check if email is free (not taken by any other user)
+        $stmt = $this->connect()->prepare("SELECT * FROM customer WHERE email = ?");
+        $stmt->execute([$email]);
+        $result = $stmt->fetch();
+
+        if (isset($result["customerID"]) == $this->userId || (filter_var($email, FILTER_VALIDATE_EMAIL) && isset($result["customerID"]) == $this->userId)) {
+            $this->email;
         } else {
-            echo  "is-invalid";
+            array_push($this->errors, "email");
         }
     }
 
@@ -138,6 +160,15 @@ class Account extends Dbh {
 
     // Method to Update Account for user
     public function confirmAccount() {
+        if (count($this->errors) == 2) {
+            $stmt = $this->connect()->prepare("UPDATE customer
+            SET firstName = ?,
+                lastName = ?,
+                email = ?
+            WHERE customerID = ?");
+            $result = $stmt->execute([$this->inputValues['firstName'], $this->inputValues['lastName'], $this->inputValues['email'], $this->userId]);
+        } else if (count($this->errors) == 3) {
+        }
     }
 
     // ------------------------------ Validate Inputs Methods ------------------------------
@@ -226,7 +257,15 @@ class Account extends Dbh {
         setcookie("customerID", "", time() - 3600, "/");
     }
 
-    // Method to confirm before updating info
-    private function confirmUpdate() {
+    // Method to validate pass update
+    public function validateUpdate($currentPassword, $newPassword, $confirmPassword) {
+        // Validate Current Password
+        $hashedPwd = $this->getHashedPassword($this->getEmail());
+        if (empty($pwd) || !password_verify($pwd, $hashedPwd)) {
+            array_push($this->errors, "currentPassword");
+        }
+
+        // Validate New Password
+        $this->validatePassword($newPassword, $confirmPassword);
     }
 }
