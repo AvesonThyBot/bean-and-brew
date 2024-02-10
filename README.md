@@ -10,9 +10,7 @@ Link-
 
 # TO DO:
 
-- reduce code
-- add account management/update
-- make auto class loader include
+- finish password update
 - add shopping cart page
 - add preview item information
 - add shopping cart system

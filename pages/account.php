@@ -1,9 +1,7 @@
 <?php
 
-// Include the necessary class
-include_once("../classes/account.class.php");
-include_once("../classes/webpage.class.php");
-include_once("../classes/account.class.php");
+// Include class autoloader
+include_once("../includes/autoloader.inc.php");
 
 // Create Account Object & Fill entry when clicked
 $account = new Account($_POST["firstName"] ?? '', $_POST["lastName"] ?? '', $_POST["email"] ?? '', $_POST["password"] ?? '', $_POST["confirmPassword"] ?? '', $_GET["type"] ?? '', $_COOKIE["customerID"] ?? '');
@@ -43,7 +41,7 @@ if (isset($_POST["btnSubmitPassword"])) {
 }
 
 print_r($account->errors);
-
+echo $account->getValid("currentPassword");
 
 // Redirect if logged in
 if (isset($_COOKIE["customerID"]) && ($_GET["type"] !== "account" && $_GET["type"] !== "logout")) {
@@ -210,7 +208,7 @@ include_once("../includes/header.inc.php");
             <!-- Current Password -->
             <div class="has-validation">
                 <label for="password">Current Password</label>
-                <input type="password" class="form-control <?php if (isset($_POST["btnSubmitPassword"])) $account->getValid("currentPassword"); ?>" placeholder="Current Password" name="currentPassword" required>
+                <input type="password" value="" class="form-control <?php if (isset($_POST["btnSubmitPassword"])) $account->getValid("currentPassword"); ?>" placeholder="Current Password" name="currentPassword" required>
                 <div class="invalid-feedback">
                     <!-- Invalid input-->
                     Password does not match.

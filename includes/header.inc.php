@@ -2,7 +2,12 @@
 if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_SELF'], 'includes/') !== false) {
     header('Location: ../index.php');
     exit();
-} ?>
+}
+
+// Include class autoloader
+include_once("autoloader.inc.php");
+$account = new Account("", "", "", "", "", "", "")
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -90,7 +95,8 @@ if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_S
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end w-100 mw-100 mt-2">
                             <?php if (isset($_COOKIE["customerID"])) { ?>
-                                <li><a class="dropdown-item" href="../pages/account.php?type=account"><?php $account->getName() ?></a></li>
+                                <li><a class="dropdown-item" href="../pages/account.php?type=account"><?php echo $account->getName();
+                                                                                                        ?></a></li>
                                 <li>
                                     <hr class="dropdown-divider" />
                                 </li>

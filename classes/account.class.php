@@ -65,10 +65,10 @@ class Account extends Dbh {
 
     // GETTER Method to get account name
     public function getName() {
-        $stmt = $this->connect()->prepare("SELECT firstName FROM customer WHERE customerID = ?");
+        $stmt = $this->connect()->prepare("SELECT * FROM customer WHERE customerID = ?");
         $stmt->execute([$this->userId]);
-        $result = $stmt->fetch();
-        echo ucfirst($result["firstName"]);
+        $result = $stmt->fetchAll();
+        return in_array("firstName", $result) ? ucfirst($result["firstName"]) : "Profile";
     }
 
     // GETTER Method to get account name
@@ -242,6 +242,19 @@ class Account extends Dbh {
         }
     }
 
+    // Method to validate pass update
+    public function validateUpdate($currentPassword, $newPassword, $confirmPassword) {
+        // Validate Current Password
+        $hashedPwd = $this->getHashedPassword($this->getEmail());
+        echo "F:" . empty($currentPassword) . "S" . !password_verify($currentPassword, $hashedPwd);
+        if (empty($currentPassword) || !password_verify($currentPassword, $hashedPwd)) {
+            array_push($this->errors, "currentPassword");
+        }
+
+        // Validate New Password
+        $this->validatePassword($newPassword, $confirmPassword);
+    }
+
     // ------------------------------ Other Methods ------------------------------
 
     // Method to CREATE cookies
@@ -255,17 +268,5 @@ class Account extends Dbh {
     // Method to DELETE cookies
     public function deleteCookies() {
         setcookie("customerID", "", time() - 3600, "/");
-    }
-
-    // Method to validate pass update
-    public function validateUpdate($currentPassword, $newPassword, $confirmPassword) {
-        // Validate Current Password
-        $hashedPwd = $this->getHashedPassword($this->getEmail());
-        if (empty($pwd) || !password_verify($pwd, $hashedPwd)) {
-            array_push($this->errors, "currentPassword");
-        }
-
-        // Validate New Password
-        $this->validatePassword($newPassword, $confirmPassword);
     }
 }

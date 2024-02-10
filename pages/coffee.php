@@ -1,8 +1,6 @@
 <?php
-// Include the necessary class
-include_once("../classes/webpage.class.php");
-include_once("../classes/product.class.php");
-include_once("../classes/account.class.php");
+// Include class autoloader
+include_once("../includes/autoloader.inc.php");
 
 
 // Create Object
