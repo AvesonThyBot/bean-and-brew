@@ -37,11 +37,7 @@ if (isset($_POST["btnSubmit"])) {
 // Account password update
 if (isset($_POST["btnSubmitPassword"])) {
     // validate updated info
-    $account->validateUpdate($_POST["currentPassword"] ?? '', $_POST["password"] ?? '', $_POST["confirmPassword"] ?? '');
 }
-
-print_r($account->errors);
-echo $account->getValid("currentPassword");
 
 // Redirect if logged in
 if (isset($_COOKIE["customerID"]) && ($_GET["type"] !== "account" && $_GET["type"] !== "logout")) {
@@ -204,17 +200,7 @@ include_once("../includes/header.inc.php");
 
         <!-- Update Password Form -->
         <form method="POST" class="row g-3 needs-validation gap-1 d-flex justify-content-center" novalidate>
-
-            <!-- Current Password -->
-            <div class="has-validation">
-                <label for="password">Current Password</label>
-                <input type="password" value="" class="form-control <?php if (isset($_POST["btnSubmitPassword"])) $account->getValid("currentPassword"); ?>" placeholder="Current Password" name="currentPassword" required>
-                <div class="invalid-feedback">
-                    <!-- Invalid input-->
-                    Password does not match.
-                </div>
-            </div>
-            <!-- Password -->
+            <!-- New Password -->
             <div class="has-validation">
                 <label for="password">Password</label>
                 <input type="password" value="<?php $account->getValue("password"); ?>" class="form-control <?php if (isset($_POST["btnSubmitPassword"])) $account->getValid("password"); ?>" placeholder="Password" name="password" required>
@@ -234,7 +220,7 @@ include_once("../includes/header.inc.php");
             </div>
             <!-- Submit -->
             <div>
-                <button class="btn btn-outline-light float-end" type="submit" name="btnSubmitPassword">Register</button>
+                <button class="btn btn-outline-light float-end" type="submit" name="btnSubmitPassword">Update</button>
             </div>
         </form>
     </section>

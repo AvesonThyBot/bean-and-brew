@@ -18,7 +18,7 @@ class Account extends Dbh {
     private $pwd;
     private $userId;
     private $inputValues = [];
-    public $errors = array();
+    private $errors = array();
 
     // Construct
     public function __construct($firstName, $lastName, $email, $pwd, $confirmPassword, $type, $userId) {
@@ -49,9 +49,6 @@ class Account extends Dbh {
             $this->validateEmail($email);
             $this->validatePassword($pwd, $confirmPassword);
         } else {
-            $this->validateName($firstName, "firstName");
-            $this->validateName($lastName, "lastName");
-            $this->getValidEmail($email);
             $this->validatePassword($pwd, $confirmPassword);
         }
     }
@@ -113,12 +110,12 @@ class Account extends Dbh {
         }
     }
 
-    // GETTER Method to get is-invalid/is-valid for Register & Account Managment
+    // GETTER Method to get is-invalid/is-valid for Register & Account Management
     public function getValid($entryType) {
         echo in_array($entryType, $this->errors) ? "is-invalid" : "is-valid";
     }
 
-    // GETTER Method to get is-invalid/is-valid for Register & Account Managment
+    // GETTER Method to get is-invalid/is-valid for Register & Account Management
     public function getValidEmail($email) {
         // Check if email is free (not taken by any other user)
         $stmt = $this->connect()->prepare("SELECT * FROM customer WHERE email = ?");
@@ -240,19 +237,6 @@ class Account extends Dbh {
             // Assign Value
             $this->pwd = $pwd;
         }
-    }
-
-    // Method to validate pass update
-    public function validateUpdate($currentPassword, $newPassword, $confirmPassword) {
-        // Validate Current Password
-        $hashedPwd = $this->getHashedPassword($this->getEmail());
-        echo "F:" . empty($currentPassword) . "S" . !password_verify($currentPassword, $hashedPwd);
-        if (empty($currentPassword) || !password_verify($currentPassword, $hashedPwd)) {
-            array_push($this->errors, "currentPassword");
-        }
-
-        // Validate New Password
-        $this->validatePassword($newPassword, $confirmPassword);
     }
 
     // ------------------------------ Other Methods ------------------------------

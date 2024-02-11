@@ -10,7 +10,7 @@ Link-
 
 # TO DO:
 
-- finish password update
+- finish password update (TO-DO later)
 - add shopping cart page
 - add preview item information
 - add shopping cart system
