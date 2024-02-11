@@ -11,6 +11,7 @@ Link-
 # TO DO:
 
 - finish password update (TO-DO later)
+- seperate updating account & logout from account.php
 - add shopping cart page
 - add preview item information
 - add shopping cart system
