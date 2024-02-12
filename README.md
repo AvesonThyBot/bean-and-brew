@@ -10,8 +10,7 @@ Link-
 
 # TO DO:
 
-- finish password update (TO-DO later)
-- seperate updating account & logout from account.php
-- add shopping cart page
+- finish profile.php
 - add preview item information
+- add shopping cart page
 - add shopping cart system

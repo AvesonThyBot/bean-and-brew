@@ -6,7 +6,6 @@ if (strpos($_SERVER['PHP_SELF'], 'classes/') !== false || strpos($_SERVER['PHP_S
 
 // Include class autoloader
 include_once("autoloader.inc.php");
-$account = new Account("", "", "", "", "", "", "")
 ?>
 
 <!DOCTYPE html>
@@ -95,12 +94,11 @@ $account = new Account("", "", "", "", "", "", "")
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end w-100 mw-100 mt-2">
                             <?php if (isset($_COOKIE["customerID"])) { ?>
-                                <li><a class="dropdown-item" href="../pages/account.php?type=account"><?php echo $account->getName();
-                                                                                                        ?></a></li>
+                                <li><a class="dropdown-item" href="../pages/profile.php">Profile</a></li>
                                 <li>
                                     <hr class="dropdown-divider" />
                                 </li>
-                                <li><a class="dropdown-item" href="../pages/account.php?type=logout">Log out</a></li>
+                                <li><a class="dropdown-item" href="../pages/profile.php?type=logout">Log out</a></li>
                             <?php } else { ?>
                                 <li><a class="dropdown-item" href="../pages/account.php?type=login">Login</a></li>
                                 <li>

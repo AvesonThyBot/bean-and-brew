@@ -26,34 +26,18 @@ if (isset($_POST["btnSubmit"])) {
                 exit();
                 break;
             }
-        case 'account': // confirm account update
-            $account->confirmAccount();
-            break;
-        default: // incase its nothing or logout
-            break;
     }
 }
 
-// Account password update
-if (isset($_POST["btnSubmitPassword"])) {
-    // validate updated info
-}
-
 // Redirect if logged in
-if (isset($_COOKIE["customerID"]) && ($_GET["type"] !== "account" && $_GET["type"] !== "logout")) {
+if (isset($_COOKIE["customerID"])) {
     header("Location:../index.php");
     exit();
-} else if (!isset($_COOKIE["customerID"]) && $_GET["type"] == "account") {
+} else if (!isset($_COOKIE["customerID"]) && !isset($_GET["type"])) {
     header("Location:account.php?type=register");
     exit();
 }
 
-// Logout
-if (isset($_GET["type"]) && $_GET["type"] == "logout") {
-    $account->deleteCookies();
-    header("Location:account.php?type=register");
-    exit();
-}
 
 // Create Object
 $webpage = new Webpage('Account - Bean and Brew', "account");
@@ -150,77 +134,6 @@ include_once("../includes/header.inc.php");
             <!-- Submit -->
             <div>
                 <button class="btn btn-outline-light float-end" type="submit" name="btnSubmit">Register</button>
-            </div>
-        </form>
-    </section>
-
-    <!-- Manage Account -->
-    <section class="container d-none" id="account">
-        <h1 class="text-white fw-bold text-center">Manage Account Information</h1>
-        <hr class="border border-light border-2 opacity-50 rounded">
-
-        <!-- Account Information Update Form -->
-        <form method="POST" class="row needs-validation gap-1 d-flex justify-content-center" novalidate>
-            <!-- Email -->
-            <div class="has-validation">
-                <label for="email">Email</label>
-                <input type="text" value="<?php echo $account->getAccountValue($_COOKIE["customerID"], "email") ?>" class="form-control disable-input <?php if (isset($_POST["btnSubmit"]))  $account->getValid("email"); ?>" value="example@beanandbew.com" name="email" required>
-                <div class="invalid-feedback">
-                    <!-- Invalid input-->
-                    Email is invalid or taken, please try again.
-                </div>
-            </div>
-            <!-- First name -->
-            <div class="has-validation">
-                <label for="firstName">First name</label>
-                <input type="text" value="<?php echo $account->getAccountValue($_COOKIE["customerID"], "firstName"); ?>" class="form-control disable-input <?php if (isset($_POST["btnSubmit"])) $account->getValid("firstName"); ?>" value="John" name="firstName" required>
-                <div class="invalid-feedback">
-                    <!-- Invalid input-->
-                    Last name must be above 3 letters and under 20 letters, please try again.
-                </div>
-            </div>
-            <!-- Last name -->
-            <div class="has-validation">
-                <label for="lastName">Last name</label>
-                <input type="text" value="<?php echo $account->getAccountValue($_COOKIE["customerID"], "lastName"); ?>" class="form-control disable-input <?php if (isset($_POST["btnSubmit"])) $account->getValid("lastName"); ?>" value="Doe" name="lastName" required>
-                <div class="invalid-feedback">
-                    <!-- Invalid input-->
-                    Last name must be above 3 letters and under 20 letters, please try again.
-                </div>
-            </div>
-            <!-- Buttons -->
-            <div class="text-end mt-2">
-                <button type="button" class="btn btn-light" id="btnEdit">Edit</button>
-                <button class="btn btn-outline-light ms-1" type="submit" name="btnSubmit">Update</button>
-            </div>
-        </form>
-
-        <h1 class="text-white fw-bold text-center">Update Password</h1>
-        <hr class="border border-light border-2 opacity-50 rounded">
-
-        <!-- Update Password Form -->
-        <form method="POST" class="row g-3 needs-validation gap-1 d-flex justify-content-center" novalidate>
-            <!-- New Password -->
-            <div class="has-validation">
-                <label for="password">Password</label>
-                <input type="password" value="<?php $account->getValue("password"); ?>" class="form-control <?php if (isset($_POST["btnSubmitPassword"])) $account->getValid("password"); ?>" placeholder="Password" name="password" required>
-                <div class="invalid-feedback">
-                    <!-- Invalid input-->
-                    Password must be atleast 5 characters.
-                </div>
-            </div>
-            <!-- Confirm Password -->
-            <div class="has-validation">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" value="<?php $account->getValue("confirmPassword"); ?>" class="form-control <?php if (isset($_POST["btnSubmitPassword"])) $account->getValid("confirmPassword"); ?>" placeholder="Confirm Password" name="confirmPassword" required>
-                <div class="invalid-feedback">
-                    <!-- Invalid input-->
-                    Password does not match
-                </div>
-            </div>
-            <!-- Submit -->
-            <div>
-                <button class="btn btn-outline-light float-end" type="submit" name="btnSubmitPassword">Update</button>
             </div>
         </form>
     </section>

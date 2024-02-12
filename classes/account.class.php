@@ -35,7 +35,7 @@ class Account extends Dbh {
         ];
 
         // Type Iteration
-        if (in_array($type, ["login", "register", "account"])) {
+        if (in_array($type, ["login", "register"])) {
             $this->type = $type;
         }
 
@@ -47,8 +47,6 @@ class Account extends Dbh {
             $this->validateName($firstName, "firstName");
             $this->validateName($lastName, "lastName");
             $this->validateEmail($email);
-            $this->validatePassword($pwd, $confirmPassword);
-        } else {
             $this->validatePassword($pwd, $confirmPassword);
         }
     }
@@ -68,19 +66,12 @@ class Account extends Dbh {
         return in_array("firstName", $result) ? ucfirst($result["firstName"]) : "Profile";
     }
 
-    // GETTER Method to get account name
+    // GETTER Method to get email
     public function getEmail() {
         $stmt = $this->connect()->prepare("SELECT email FROM customer WHERE customerID = ?");
         $stmt->execute([$this->userId]);
         $result = $stmt->fetch();
         return ($result["email"]);
-    }
-
-    // GETTER Method to get row of data
-    private function getRow($id) {
-        $stmt = $this->connect()->prepare("SELECT * FROM customer WHERE customerID = ?");
-        $stmt->execute([$id]);
-        return ($stmt->fetch());
     }
 
     // GETTER Method to get hashed password
@@ -97,37 +88,11 @@ class Account extends Dbh {
         echo $this->inputValues[$entryType];
     }
 
-    // GETTER Method to get Input Values
-    public function getAccountValue($id, $entryType) {
-        // Get result and assign
-        $result = $this->getRow($id);
-
-        // Iterate which value to display
-        if ($this->inputValues[$entryType] == "") {
-            return $result[$entryType];
-        } else {
-            return $this->inputValues[$entryType];
-        }
-    }
-
-    // GETTER Method to get is-invalid/is-valid for Register & Account Management
+    // GETTER Method to set is-invalid/is-valid 
     public function getValid($entryType) {
         echo in_array($entryType, $this->errors) ? "is-invalid" : "is-valid";
     }
 
-    // GETTER Method to get is-invalid/is-valid for Register & Account Management
-    public function getValidEmail($email) {
-        // Check if email is free (not taken by any other user)
-        $stmt = $this->connect()->prepare("SELECT * FROM customer WHERE email = ?");
-        $stmt->execute([$email]);
-        $result = $stmt->fetch();
-
-        if (isset($result["customerID"]) == $this->userId || (filter_var($email, FILTER_VALIDATE_EMAIL) && isset($result["customerID"]) == $this->userId)) {
-            $this->email;
-        } else {
-            array_push($this->errors, "email");
-        }
-    }
 
     // ------------------------------ Confirm Account Type Methods ------------------------------
 
@@ -152,19 +117,6 @@ class Account extends Dbh {
 
             // return result
             return $result;
-        }
-    }
-
-    // Method to Update Account for user
-    public function confirmAccount() {
-        if (count($this->errors) == 2) {
-            $stmt = $this->connect()->prepare("UPDATE customer
-            SET firstName = ?,
-                lastName = ?,
-                email = ?
-            WHERE customerID = ?");
-            $result = $stmt->execute([$this->inputValues['firstName'], $this->inputValues['lastName'], $this->inputValues['email'], $this->userId]);
-        } else if (count($this->errors) == 3) {
         }
     }
 
@@ -247,10 +199,5 @@ class Account extends Dbh {
         $stmt->execute([$this->inputValues['email']]);
         $userId = $stmt->fetch();
         setcookie("customerID", $userId["customerID"], time() + (86400 * 30), "/");
-    }
-
-    // Method to DELETE cookies
-    public function deleteCookies() {
-        setcookie("customerID", "", time() - 3600, "/");
     }
 }

@@ -62,6 +62,7 @@ include_once("../includes/header.inc.php");
     <h1 class="text-white fw-bold text-center mt-2">Contacts</h1>
     <hr class="border border-light border-2 opacity-50 rounded container">
 
+    <!-- Container -->
     <div class="container g-0">
         <div class="row g-0 align-items-center">
             <!-- Contact Details -->
