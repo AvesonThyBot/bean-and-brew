@@ -33,9 +33,9 @@ class Index extends Product {
             <div class="card h-100 text-bg-white" style="width: 300px !important;">
                 <img src="' . $this->currentProduct["product_image"] . '" class="card-img-top" alt="' . $this->currentProduct["product_name"] . '" width="260px" height="390px">
                 <div class="card-body text-center">
-                    <h5 class="card-title" data-bs-title="Name" data-bs-toggle="popover" data-bs-trigger="hover focus"  data-bs-delay="{&quot;show&quot;: 250, &quot;hide&quot;: 100}"
+                    <h5 class="card-title" data-bs-toggle="popover" data-bs-trigger="hover focus"  data-bs-delay="{&quot;show&quot;: 250, &quot;hide&quot;: 100}"
                     data-bs-animation="true" data-bs-placement="left" data-bs-content="' . $this->currentProduct["product_name"] . '">' . $this->currentProduct["product_name"] . '</h5>
-                    <p class="card-text" data-bs-title="Info" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-delay="{&quot;show&quot;: 250, &quot;hide&quot;: 100}"
+                    <p class="card-text" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-delay="{&quot;show&quot;: 250, &quot;hide&quot;: 100}"
                     data-bs-animation="true"  data-bs-content="' . $this->currentProduct["product_description"] . '">' . $this->currentProduct["product_description"] . '</p>
                     <div class="d-flex justify-content-between align-items-center mx-auto user-select-none">
                         <div class="position-relative">
@@ -43,7 +43,7 @@ class Index extends Product {
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' . $this->discountPercentage . '</span>
                         </div>
                         <span class="text-black fs-5">£' . number_format($this->currentProduct['product_price'], 2) . '</span>
-                        <a href="../pages/' . $type . '?type=' . $this->currentProduct['product_id'] . '&quantity=1" class="btn btn-outline-dark">Check Item</a>
+                        <a href="../pages/' . $type . '?type=' . $this->currentProduct['product_id'] . '" class="btn btn-outline-dark">Check Item</a>
                     </div>
                 </div>
             </div>

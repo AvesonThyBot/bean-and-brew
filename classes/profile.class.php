@@ -113,7 +113,6 @@ class Profile extends Dbh {
     // Method to Validate Email
     private function validateEmail($email) {
         $result = $this->getRowByEmail($email);
-        print_r($result);
         // Validate Email   
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             // Email is either not taken or taken by the currently logged-in user
