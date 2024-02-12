@@ -44,10 +44,17 @@ class Profile extends Dbh {
     // ------------------------------ Getters & Setters ------------------------------
 
     // GETTER Method to get row of data
-    private function getRow($id) {
+    private function getRowById($id) {
         $stmt = $this->connect()->prepare("SELECT * FROM customer WHERE customerID = ?");
         $stmt->execute([$id]);
         return ($stmt->fetch());
+    }
+
+    // GETTER Method to get email
+    private function getRowByEmail($email) {
+        $stmt = $this->connect()->prepare("SELECT * FROM customer WHERE email = ?");
+        $stmt->execute([$email]);
+        return $stmt->fetch();;
     }
 
     // GETTER Method to get Input Values
@@ -58,7 +65,7 @@ class Profile extends Dbh {
     // GETTER Method to get Input Values
     public function getAccountValue($id, $entryType) {
         // Get result and assign
-        $result = $this->getRow($id);
+        $result = $this->getRowById($id);
 
         // Iterate which value to display
         if ($this->inputValues[$entryType] == "") {
@@ -73,19 +80,6 @@ class Profile extends Dbh {
         echo in_array($entryType, $this->errors) ? "is-invalid" : "is-valid";
     }
 
-    // GETTER Method to get is-invalid/is-valid for Register & Account Management
-    public function getValidEmail($email) {
-        // Check if email is free (not taken by any other user)
-        $stmt = $this->connect()->prepare("SELECT * FROM customer WHERE email = ?");
-        $stmt->execute([$email]);
-        $result = $stmt->fetch();
-
-        if (isset($result["customerID"]) == $this->userId || (filter_var($email, FILTER_VALIDATE_EMAIL) && isset($result["customerID"]) == $this->userId)) {
-            $this->email;
-        } else {
-            array_push($this->errors, "email");
-        }
-    }
 
     // ------------------------------ Confirm Account Type Methods ------------------------------
 
@@ -97,9 +91,10 @@ class Profile extends Dbh {
                 lastName = ?,
                 email = ?
             WHERE customerID = ?");
-            $result = $stmt->execute([$this->inputValues['firstName'], $this->inputValues['lastName'], $this->inputValues['email'], $this->userId]);
-        } else if (count($this->errors) == 3) {
+            $result = $stmt->execute([$this->firstName, $this->lastName, $this->email, $this->userId]);
         }
+        // Reassign info
+
     }
 
     // ------------------------------ Validate Inputs Methods ------------------------------
@@ -117,12 +112,20 @@ class Profile extends Dbh {
 
     // Method to Validate Email
     private function validateEmail($email) {
-        // Validate Email
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL) || $this->checkEmail($email)) {
-            array_push($this->errors, "email");
+        $result = $this->getRowByEmail($email);
+        print_r($result);
+        // Validate Email   
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            // Email is either not taken or taken by the currently logged-in user
+            if (!isset($result["customerID"]) || $result["customerID"] == $this->userId) {
+                $this->email = $email;
+            } else {
+                // Email is taken by someone else
+                array_push($this->errors, "email");
+            }
         } else {
-            // Assign Value
-            $this->email = $email;
+            // Invalid email format
+            array_push($this->errors, "email");
         }
     }
 
@@ -139,15 +142,6 @@ class Profile extends Dbh {
 
         // Assign Value
         if (!(in_array("password", $this->errors) || in_array("confirmPassword", $this->errors)))  $this->pwd = $password;
-    }
-
-    // Method to check if email exists
-    private function checkEmail($email) {
-        $stmt = $this->connect()->prepare("SELECT * FROM customer WHERE email = ?");
-        $stmt->execute([$email]);
-
-        // Return boolean result if email is in use
-        return $stmt->rowCount() > 0;
     }
 
     // ------------------------------ Other Methods ------------------------------

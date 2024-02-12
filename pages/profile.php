@@ -6,6 +6,11 @@ include_once("../includes/autoloader.inc.php");
 // Create Account Object & Fill entry when clicked
 $profile = new Profile($_POST["firstName"] ?? '', $_POST["lastName"] ?? '', $_POST["email"] ?? '', $_POST["password"] ?? '', $_POST["confirmPassword"] ?? '', $_COOKIE["customerID"] ?? '');
 
+// Account general info update
+if (isset($_POST["btnSubmit"])) {
+    $profile->confirmAccount();
+}
+
 // Account password update
 if (isset($_POST["btnSubmitPassword"])) {
     // validate updated info
