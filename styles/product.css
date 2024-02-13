@@ -3,3 +3,11 @@
 .input-group input:active {
 	box-shadow: none !important;
 }
+
+/* Image Size */
+.order-lg-1 {
+	height: 50dvh !important;
+	width: 20dvw !important;
+	overflow: hidden;
+	object-fit: fill;
+}

@@ -11,6 +11,6 @@ Link-
 # TO DO:
 
 - finish profile.php
-- add preview item information
-- add shopping cart page
-- add shopping cart system
+- add shopping cart page - read, delete and update
+- add toast message when item added to cart
+- add quantity in cart section in item display

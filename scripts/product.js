@@ -12,7 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	webUrl = new URLSearchParams(webUrl);
 	webUrl = webUrl.get("type");
 	// Login
-	if (webUrl > 0 && webUrl <= 40) {
+	console.log(window.location.toString().includes("baked.php"));
+	if (window.location.toString().includes("baked.php") && webUrl > 20 && webUrl <= 40) {
+		mainSection.classList.add("d-none");
+	} else if (window.location.toString().includes("coffee.php") && webUrl > 0 && webUrl <= 20) {
 		mainSection.classList.add("d-none");
 	}
 	// Register

@@ -15,7 +15,12 @@ if (count($_COOKIE) <= 0) {
 
 // Create cart object if in item preview
 if (isset($_GET["type"]) && $_GET["type"]) {
-    $cart = new Cart($_GET["type"]);
+    $cart = new Cart("baked", $_GET["type"] ?? '', $_POST["quantity"] ?? '');
+}
+
+// Add to cart
+if (isset($_POST["btnCart"])) {
+    $cart->addToCart($_COOKIE["customerID"]);
 }
 
 // Include Header

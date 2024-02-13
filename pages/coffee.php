@@ -6,10 +6,21 @@ include_once("../includes/autoloader.inc.php");
 // Create Object
 $webpage = new Webpage("Coffee - Bean and Brew", "coffee");
 $webpage->setScript("../scripts/product.js");
+$webpage->setStyleSheet("../styles/product.css");
 
 // Redirect if not logged in
 if (count($_COOKIE) <= 0) {
     header("Location:account.php?type=register");
+}
+
+// Create cart object if in item preview
+if (isset($_GET["type"]) && $_GET["type"]) {
+    $cart = new Cart("coffee", $_GET["type"] ?? '', $_POST["quantity"] ?? '');
+}
+
+// Add to cart
+if (isset($_POST["btnCart"])) {
+    $cart->addToCart($_COOKIE["customerID"]);
 }
 
 // Include Header
@@ -18,10 +29,10 @@ include_once("../includes/header.inc.php");
 
 <!-- Main Body -->
 <main class="container text-white my-2">
+    <h1 class="text-white fw-bold text-center">Coffee</h1>
+    <hr class="border border-light border-2 opacity-50 rounded">
     <!-- Main Section -->
     <section id="main">
-        <h1 class="text-white fw-bold text-center">Coffee</h1>
-        <hr class="border border-light border-2 opacity-50 rounded">
         <!-- Coffees -->
         <div class="row mt-4">
             <?php $coffee = new Index(); ?>
@@ -31,7 +42,7 @@ include_once("../includes/header.inc.php");
 
     <!-- Display Product Info -->
     <section class="container" id="productInfo">
-        Coffee
+        <?php if (isset($cart)) $cart->displayContent() ?>
     </section>
 </main>
 
