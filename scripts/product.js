@@ -4,18 +4,19 @@ const mainSection = document.body.querySelector("#main");
 const minusButton = document.body.querySelector("#minusBtn");
 const numberInput = document.body.querySelector("#number");
 const plusButton = document.body.querySelector("#plusBtn");
+const successDiv = document.body.querySelector("#success");
+const failDiv = document.body.querySelector("#danger");
 
 // Display account sections
 document.addEventListener("DOMContentLoaded", function () {
 	// set url link
-	let webUrl = window.location.search;
-	webUrl = new URLSearchParams(webUrl);
-	webUrl = webUrl.get("type");
+	let typeUrl = window.location.search;
+	typeUrl = new URLSearchParams(typeUrl);
+	typeUrl = typeUrl.get("type");
 	// Login
-	console.log(window.location.toString().includes("baked.php"));
-	if (window.location.toString().includes("baked.php") && webUrl > 20 && webUrl <= 40) {
+	if (window.location.toString().includes("baked.php") && typeUrl > 20 && typeUrl <= 40) {
 		mainSection.classList.add("d-none");
-	} else if (window.location.toString().includes("coffee.php") && webUrl > 0 && webUrl <= 20) {
+	} else if (window.location.toString().includes("coffee.php") && typeUrl > 0 && typeUrl <= 20) {
 		mainSection.classList.add("d-none");
 	}
 	// Register
@@ -23,8 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		productSection.classList.add("d-none");
 	}
 });
-
-// Quantity Input Box
 
 // Minus Button
 minusButton.onclick = () => {

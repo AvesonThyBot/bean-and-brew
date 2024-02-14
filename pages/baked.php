@@ -15,7 +15,7 @@ if (count($_COOKIE) <= 0) {
 
 // Create cart object if in item preview
 if (isset($_GET["type"]) && $_GET["type"]) {
-    $cart = new Cart("baked", $_GET["type"] ?? '', $_POST["quantity"] ?? '');
+    $cart = new Cart("baked", $_GET["type"] ?? '', $_POST["quantity"] ?? '', $_COOKIE["customerID"]);
 }
 
 // Add to cart
@@ -31,6 +31,7 @@ include_once("../includes/header.inc.php");
 <main class="container text-white my-2">
     <h1 class="text-white fw-bold text-center">Baked Goods</h1>
     <hr class="border border-light border-2 opacity-50 rounded">
+
     <!-- Main Section -->
     <section id="main">
         <!-- Baked goods -->
@@ -44,8 +45,8 @@ include_once("../includes/header.inc.php");
     <section class="container" id="productInfo">
         <?php if (isset($cart)) $cart->displayContent() ?>
     </section>
-</main>
 
+</main>
 
 <?php
 // Footer 
