@@ -122,6 +122,32 @@ class Cart extends Dbh {
         }
     }
 
+    // Method to update quantity
+    public function updateQuantity($quantity, $item) {
+        // assign updated cart detail
+        $this->item = $item;
+        $selectResult = $this->getExisting($item);
+
+        // Validate quantity
+        intval($quantity);
+        if ($quantity <= 0) {
+            $quantity = $selectResult["quantity"];
+        }
+
+        // Iterate the option
+        if ($selectResult !== false) {
+            // Update quantity in cart
+            $stmt = $this->connect()->prepare("UPDATE cart SET quantity = ? WHERE product_id = ? AND user_id = ?");
+            $stmt->execute([$quantity, $this->item, $this->id]);
+        }
+    }
+
+    // Method to delete item from cart
+    public function deleteItem($item) {
+        $stmt = $this->connect()->prepare("DELETE FROM cart WHERE product_id = ? AND user_id = ? ");
+        $stmt->execute([$item, $this->id]);
+    }
+
     // Method to display cart information
     public function displayCart() {
         // Get all cart items
@@ -142,25 +168,36 @@ class Cart extends Dbh {
                     </div>
                 </div>
                 <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
-                    <div class="mb-2">
-                        <label for="quantity1">Set Quantity</label>
-                        <input class="form-control form-control-sm" type="number" id="quantity1" value="<?php echo $value["quantity"] ?>">
-                    </div>
-                    <a class="btn btn-outline-secondary btn-sm btn-block mb-2" href="<?php echo $this->getLink($value["product_id"]) ?>">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                        </svg>
-                        Visit Page</a>
-                    <button class="btn btn-outline-danger btn-sm btn-block mb-2" type="button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-                        </svg>
-                        Remove</button>
-                    <button class="btn btn-danger btn-sm btn-block mb-2" type="button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-                        </svg>
-                        Delete</button>
+                    <form method="post">
+                        <!-- Set Quantity -->
+                        <div class="mb-2">
+                            <label for="quantity1">Set Quantity</label>
+                            <input class="form-control form-control-sm" name="Quantity" type="number" id="quantity1" value="<?php echo $value["quantity"] ?>">
+                        </div>
+                        <!-- Hidden Value -->
+                        <input type="hidden" name="item" value="<?php echo $value["product_id"] ?>" />
+                        <!-- Update Button -->
+                        <button name="updateQuantityButton" type="submit" class="btn btn-outline-secondary btn-sm btn-block mb-2" href="<?php echo $this->getLink($value["product_id"]) ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                            </svg>
+                            Update
+                        </button>
+                        <!-- Visit Page -->
+                        <a class="btn btn-outline-secondary btn-sm btn-block mb-2" href="<?php echo $this->getLink($value["product_id"]) ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cursor-fill" viewBox="0 0 16 16">
+                                <path d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z" />
+                            </svg>
+                            Visit Page
+                        </a>
+                        <!-- Delete Button -->
+                        <button name="deleteButton" class="btn btn-outline-danger btn-sm btn-block mb-2" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+                            </svg>
+                            Remove
+                        </button>
+                    </form>
                 </div>
             </div>
 
