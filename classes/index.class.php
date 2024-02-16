@@ -26,6 +26,15 @@ class Index extends Product {
         }
     }
 
+    // Method to get page name
+    private function getPageName($id) {
+        if ($id > 0 && $id <= 20) {
+            return "coffee.php";
+        } elseif ($id > 20 && $id <= 40) {
+            return "baked.php";
+        }
+    }
+
     // Method to return the html code for products
     private function getHTML($type) {
         echo '
@@ -43,7 +52,7 @@ class Index extends Product {
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' . $this->discountPercentage . '</span>
                         </div>
                         <span class="text-black fs-5">£' . number_format($this->currentProduct['product_price'], 2) . '</span>
-                        <a href="../pages/' . $type . '?type=' . $this->currentProduct['product_id'] . '" class="btn btn-outline-dark">Check Item</a>
+                        <a href="../pages/' . $this->getPageName($this->currentProduct['product_id']) . '?type=' . $this->currentProduct['product_id'] . '" class="btn btn-outline-dark">Check Item</a>
                     </div>
                 </div>
             </div>
