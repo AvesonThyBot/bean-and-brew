@@ -9,7 +9,7 @@ $webpage->setScript("../scripts/product.js");
 $webpage->setStyleSheet("../styles/product.css");
 
 // Redirect if not logged in
-if (count($_COOKIE) <= 0) {
+if (!isset($_COOKIE["customerID"])) {
     header("Location:account.php?type=register");
 }
 

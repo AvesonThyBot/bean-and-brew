@@ -7,7 +7,7 @@ include_once("../includes/autoloader.inc.php");
 $webpage = new Webpage("Book A Space - Bean and Brew", "book");
 
 // Redirect if not logged in
-if (count($_COOKIE) <= 0) {
+if (!isset($_COOKIE["customerID"])) {
     header("Location:account.php?type=register");
 }
 

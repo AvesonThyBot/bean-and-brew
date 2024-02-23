@@ -11,6 +11,4 @@ Link-
 # TO DO:
 
 - finish profile.php
-- add shopping cart page - read, delete and update
-- add toast message when item added to cart
-- add quantity in cart section in item display
+- fix responsiveness for mobile devices at cart page

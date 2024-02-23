@@ -9,13 +9,13 @@ $webpage->setScript("../scripts/product.js");
 $webpage->setStyleSheet("../styles/product.css");
 
 // Redirect if not logged in
-if (count($_COOKIE) <= 0) {
+if (!isset($_COOKIE["customerID"])) {
     header("Location:account.php?type=register");
 }
 
 // Create cart object if in item preview
 if (isset($_GET["type"]) && $_GET["type"]) {
-    $cart = new Cart("coffee", $_GET["type"] ?? '', $_POST["quantity"] ?? '',$_COOKIE["customerID"]);
+    $cart = new Cart("coffee", $_GET["type"] ?? '', $_POST["quantity"] ?? '', $_COOKIE["customerID"]);
 }
 
 // Add to cart

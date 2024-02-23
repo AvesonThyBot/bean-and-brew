@@ -8,7 +8,7 @@ $webpage = new Webpage("Cart - Bean and Brew", "cart");
 $webpage->setStyleSheet("../styles/product.css");
 
 // Redirect if not logged in
-if (count($_COOKIE) <= 0) {
+if (!isset($_COOKIE["customerID"])) {
     header("Location:account.php?type=register");
 }
 
