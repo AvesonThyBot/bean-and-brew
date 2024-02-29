@@ -152,6 +152,12 @@ class Cart extends Dbh {
     public function displayCart() {
         // Get all cart items
         $result = $this->getCartItems();
+
+        // Display none if theres no product
+        if (count($result) == 0) {
+            echo "<div class='h1 col-12 text-white text-center my-5'>No items in cart.</div>";
+        }
+
         foreach ($result as $key => $value) {
             $this->item = $value["product_id"];
             $product = $this->getProduct();

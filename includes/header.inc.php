@@ -71,7 +71,7 @@ include_once("autoloader.inc.php");
                     </li>
                 </ul>
                 <!-- Buttons -->
-                <div class="d-flex gap-2 <?php echo $webpage->showButton(); ?>">
+                <div class="d-flex justify-content-center gap-2 text-center <?php echo $webpage->showButton(); ?>">
                     <!-- Shopping Cart Button-->
                     <a class="btn btn-light" href="../pages/cart.php">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-basket-fill" viewBox="0 0 16 16">

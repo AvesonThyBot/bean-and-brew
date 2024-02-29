@@ -17,8 +17,6 @@ include_once("includes/header.inc.php");
 
 ?>
 
-
-
 <!-- Main Body -->
 <main class="container text-white my-2">
     <h1 class="text-white fw-bold text-center">Today's Top Selling</h1>

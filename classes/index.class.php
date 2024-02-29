@@ -75,10 +75,5 @@ class Index extends Product {
             echo "There was an error!";
         }
         $this->currentProduct = ''; //reset data to free memory
-
-
-
-        // coffe ids = 3,6,8
-        // food ids = 22,23,31
     }
 }

@@ -60,7 +60,7 @@ include_once("../includes/header.inc.php");
 
     <!-- About Us Contacts -->
     <h1 class="text-white fw-bold text-center mt-2">Contacts</h1>
-    <hr class="border border-light border-2 opacity-50 rounded container">
+    <hr class="border border-light border-2 opacity-50 rounded container" />
 
     <!-- Container -->
     <div class="container g-0">
